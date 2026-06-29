@@ -11,7 +11,7 @@ const Services = () => {
         <div className="fade-up-element" style={styles.serviceRow}>
           <div style={styles.lottieCol}>
             <lottie-player
-              src="/src/assets/lottie/mobile.json"
+              src="/lottie/mobile.json"
               background="transparent"
               speed="1"
               style={{ width: '100%', height: 'min(400px, 70vh)' }}
@@ -49,7 +49,7 @@ const Services = () => {
         <div className="fade-up-element" style={{ ...styles.serviceRow, ...styles.rowReverse }}>
           <div style={styles.lottieCol}>
             <lottie-player
-              src="/src/assets/lottie/web.json"
+              src="/lottie/web.json"
               background="transparent"
               speed="1"
               style={{ width: '100%', height: 'min(350px, 60vh)' }}
@@ -87,7 +87,7 @@ const Services = () => {
         <div className="fade-up-element" style={styles.serviceRow}>
           <div style={styles.lottieCol}>
             <lottie-player
-              src="/src/assets/lottie/hacker.json"
+              src="/lottie/hacker.json"
               background="transparent"
               speed="1"
               style={{ width: '100%', height: 'min(350px, 60vh)' }}

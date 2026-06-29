@@ -7,13 +7,13 @@ const Hero = () => {
       {/* Massive Background Lottie */}
       <div style={styles.massiveLottieContainer}>
         <lottie-player
-          src="/src/assets/lottie/code.json"
-          background="transparent"
-          speed="0.5"
-          style={{ width: '100%', height: '100%', opacity: 0.2 }}
-          loop
-          autoplay
-        ></lottie-player>
+              src="/lottie/code.json"
+              background="transparent"
+              speed="0.5"
+              style={{ width: '100%', height: '100%', opacity: 0.2 }}
+              loop
+              autoplay
+            ></lottie-player>
       </div>
 
       <div style={styles.content}>
