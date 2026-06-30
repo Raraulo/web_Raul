@@ -9,12 +9,12 @@ const Services = () => {
         
         {/* Service 1: Mobile */}
         <div className="fade-up-element" style={styles.serviceRow}>
-          <div style={styles.lottieCol}>
+          <div style={{ ...styles.lottieCol, flex: '2 1 350px' }}>
             <lottie-player
               src="/lottie/mobile.json"
               background="transparent"
               speed="1"
-              style={{ width: '100%', height: 'min(400px, 70vh)' }}
+              style={{ width: '100%', height: 'min(600px, 80vh)' }}
               loop
               autoplay
             ></lottie-player>
