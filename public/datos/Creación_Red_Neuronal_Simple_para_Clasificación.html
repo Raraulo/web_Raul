@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jupyter Notebook — generated with runcell</title>
+    <meta name="description" content="Exported with runcell — convert .ipynb notebooks to HTML or PDF anytime at runcell.dev." />
+    <meta name="generator" content="runcell" />
+    <style>
+        :root {
+            --jp-code-font-family: 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+            --jp-content-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            --jp-cell-prompt-width: 64px;
+            --jp-input-prompt-color: #307fc1;
+            --jp-output-prompt-color: #bf5b3d;
+            --jp-cell-input-bg: #f7f7f7;
+            --jp-layout-color0: #ffffff;
+            --jp-layout-color1: #f7f7f7;
+            --jp-border-color1: #e0e0e0;
+            --jp-content-font-color0: #000000;
+            --jp-content-font-color1: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--jp-content-font-family);
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--jp-content-font-color0);
+            background-color: var(--jp-layout-color0);
+            margin: 0;
+            padding: 0;
+        }
+
+        .notebook-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Cell structure */
+        .cell {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .cell-prompt {
+            min-width: var(--jp-cell-prompt-width);
+            width: var(--jp-cell-prompt-width);
+            font-family: var(--jp-code-font-family);
+            font-size: 12px;
+            padding: 10px 8px 10px 0;
+            text-align: right;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .cell-content {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        /* Input prompt styling - Jupyter blue */
+        .input-prompt {
+            color: var(--jp-input-prompt-color);
+            font-weight: bold;
+        }
+
+        /* Output prompt styling - Jupyter red/orange */
+        .output-prompt {
+            color: var(--jp-output-prompt-color);
+            font-weight: bold;
+        }
+
+        /* Code cell input area */
+        .input-area {
+            background-color: var(--jp-cell-input-bg);
+            border: 1px solid var(--jp-border-color1);
+            border-radius: 2px;
+            padding: 8px 12px;
+            overflow-x: auto;
+        }
+
+        .input-area pre {
+            margin: 0;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Output area */
+        .output-area {
+            margin-top: 0;
+        }
+
+        .output-wrapper {
+            display: flex;
+            flex-direction: row;
+            margin-top: 4px;
+        }
+
+        .output-content {
+            flex: 1;
+            min-width: 0;
+            padding: 8px 0;
+        }
+
+        .output-content pre {
+            margin: 0;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Stream output (stdout/stderr) */
+        .output-stream {
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .output-stderr {
+            background-color: #fdd;
+            padding: 8px 12px;
+            border-radius: 2px;
+        }
+
+        /* Execute result / display data */
+        .output-result {
+            padding: 4px 0;
+        }
+
+        .output-result pre {
+            margin: 0;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+        }
+
+        /* Image output */
+        .output-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* HTML output (DataFrames, etc.) */
+        .output-html {
+            overflow-x: auto;
+        }
+
+        .output-html table {
+            border-collapse: collapse;
+            font-size: 13px;
+            font-family: var(--jp-content-font-family);
+        }
+
+        .output-html table th,
+        .output-html table td {
+            border: 1px solid #ddd;
+            padding: 6px 10px;
+            text-align: left;
+        }
+
+        .output-html table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+
+        .output-html table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        /* Error output */
+        .output-error {
+            background-color: #fff0f0;
+            padding: 8px 12px;
+            border-radius: 2px;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        /* Markdown cell styling */
+        .markdown-cell {
+            padding: 10px 0;
+        }
+
+        .markdown-cell h1 {
+            font-size: 2em;
+            font-weight: 600;
+            margin: 0.67em 0;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid var(--jp-border-color1);
+        }
+
+        .markdown-cell h2 {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin: 0.83em 0;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid var(--jp-border-color1);
+        }
+
+        .markdown-cell h3 {
+            font-size: 1.25em;
+            font-weight: 600;
+            margin: 1em 0;
+        }
+
+        .markdown-cell h4 {
+            font-size: 1em;
+            font-weight: 600;
+            margin: 1.33em 0;
+        }
+
+        .markdown-cell h5 {
+            font-size: 0.875em;
+            font-weight: 600;
+            margin: 1.67em 0;
+        }
+
+        .markdown-cell h6 {
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 2.33em 0;
+            color: #6a737d;
+        }
+
+        .markdown-cell p {
+            margin: 0 0 16px 0;
+            line-height: 1.6;
+        }
+
+        .markdown-cell code {
+            font-family: var(--jp-code-font-family);
+            font-size: 85%;
+            background-color: rgba(27, 31, 35, 0.05);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+
+        .markdown-cell pre {
+            background-color: var(--jp-cell-input-bg);
+            border: 1px solid var(--jp-border-color1);
+            border-radius: 3px;
+            padding: 16px;
+            overflow-x: auto;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+
+        .markdown-cell pre code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            font-size: 100%;
+        }
+
+        .markdown-cell blockquote {
+            margin: 0 0 16px 0;
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 4px solid #dfe2e5;
+        }
+
+        .markdown-cell ul,
+        .markdown-cell ol {
+            margin: 0 0 16px 0;
+            padding-left: 2em;
+        }
+
+        .markdown-cell li {
+            margin: 0.25em 0;
+        }
+
+        .markdown-cell a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .markdown-cell a:hover {
+            text-decoration: underline;
+        }
+
+        .markdown-cell hr {
+            border: 0;
+            border-top: 1px solid var(--jp-border-color1);
+            margin: 24px 0;
+        }
+
+        .markdown-cell img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .markdown-cell table {
+            border-collapse: collapse;
+            margin: 0 0 16px 0;
+        }
+
+        .markdown-cell table th,
+        .markdown-cell table td {
+            border: 1px solid #dfe2e5;
+            padding: 6px 13px;
+        }
+
+        .markdown-cell table th {
+            font-weight: 600;
+            background-color: #f6f8fa;
+        }
+
+        .markdown-cell table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+
+        /* Raw cell styling */
+        .raw-cell {
+            background-color: var(--jp-layout-color1);
+            border: 1px solid var(--jp-border-color1);
+            border-radius: 2px;
+            padding: 8px 12px;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        /* Empty prompt placeholder */
+        .prompt-empty {
+            color: transparent;
+        }
+
+        .export-footer {
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid var(--jp-border-color1);
+            color: #555;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .export-footer a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .export-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="notebook-container">
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell"><h2>Creación Red Neuronal Simple para Clasificación</h2><br><br><strong>NOMBRE: RAUL AMAGUAÑA</strong><br><br><strong>FECHA: 14/06/2026</strong><br><br>Vamos a trabajar con Google Colab, para lo cual usted debe cambiar el "runtime type":<br><br>1.  Ir a Runtime<br>2.  Seleccionar change runtime type<br>3.  Seleccionar almenos T4 GPU</div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell"><h1>1. Cargar datos</h1></div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [1]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>from sklearn.datasets import load_iris
+
+iris = load_iris()
+X = iris.data  # Características
+y = iris.target.reshape(-1, 1)  # Etiquetas
+
+print(X[0:5])
+print(y[0:5])</pre></div>
+                <div class="output-area">
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-stream">[[5.1 3.5 1.4 0.2]
+ [4.9 3.  1.4 0.2]
+ [4.7 3.2 1.3 0.2]
+ [4.6 3.1 1.5 0.2]
+ [5.  3.6 1.4 0.2]]
+[[0]
+ [0]
+ [0]
+ [0]
+ [0]]
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell">Como la variable <code>y</code> tiene varias etiquetas, estas deben ser transformadas a variables.</div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell"><h2>Codificación one-hot de las etiquetas</h2></div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [2]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>from sklearn.preprocessing import OneHotEncoder
+
+encoder = OneHotEncoder(sparse_output=False) # sparse_output=False asegura que la salida sea un arreglo dense
+y_encoded = encoder.fit_transform(y)
+
+display(y_encoded[0:5])</pre></div>
+                <div class="output-area">
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-result"><pre>array([[1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.]])</pre></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell"><h2>División del dataset en entrenamiento y prueba</h2></div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [3]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y_encoded, test_size=0.2, random_state=42)</pre></div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell"><h1>2. Creación de la Red Neuronal Simple:</h1><br><br>Estructura: una capa oculta con 10 neuronas y una capa de salida con 3 neuronas (para 3 clases en el dataset Iris).</div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell"><h2>Definir el modelo</h2></div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [4]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+
+model = Sequential([
+    Dense(10, input_shape=(4,), activation='relu'),  # Capa oculta con 10 neuronas
+    Dense(3, activation='softmax')  # Capa de salida con 3 neuronas (para 3 clases)
+])
+
+# Compilación del modelo
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# Resumen del modelo
+model.summary()</pre></div>
+                <div class="output-area">
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-stream output-stderr">/usr/local/lib/python3.12/dist-packages/keras/src/layers/core/dense.py:106: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+</div>
+                        </div>
+                    </div>
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">Model: "sequential"</span>
+</pre>
+</div>
+                        </div>
+                    </div>
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃<span style="font-weight: bold"> Layer (type)                    </span>┃<span style="font-weight: bold"> Output Shape           </span>┃<span style="font-weight: bold">       Param # </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ dense (<span style="color: #0087ff; text-decoration-color: #0087ff">Dense</span>)                   │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">10</span>)             │            <span style="color: #00af00; text-decoration-color: #00af00">50</span> │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dense_1 (<span style="color: #0087ff; text-decoration-color: #0087ff">Dense</span>)                 │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">3</span>)              │            <span style="color: #00af00; text-decoration-color: #00af00">33</span> │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+</pre>
+</div>
+                        </div>
+                    </div>
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold"> Total params: </span><span style="color: #00af00; text-decoration-color: #00af00">83</span> (332.00 B)
+</pre>
+</div>
+                        </div>
+                    </div>
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold"> Trainable params: </span><span style="color: #00af00; text-decoration-color: #00af00">83</span> (332.00 B)
+</pre>
+</div>
+                        </div>
+                    </div>
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold"> Non-trainable params: </span><span style="color: #00af00; text-decoration-color: #00af00">0</span> (0.00 B)
+</pre>
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell"><h1>3. Entrenamiento del Modelo:</h1><br><br>En esta etapa, se recomienda.</div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [5]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>history = model.fit(X_train, y_train, epochs=50, batch_size=8, validation_data=(X_test, y_test))</pre></div>
+                <div class="output-area">
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-stream">Epoch 1/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m2s[0m 42ms/step - accuracy: 0.3333 - loss: 1.8049 - val_accuracy: 0.3333 - val_loss: 1.8025
+Epoch 2/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3333 - loss: 1.6202 - val_accuracy: 0.3333 - val_loss: 1.6426
+Epoch 3/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3333 - loss: 1.4967 - val_accuracy: 0.3333 - val_loss: 1.5209
+Epoch 4/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3333 - loss: 1.4017 - val_accuracy: 0.3333 - val_loss: 1.4256
+Epoch 5/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3333 - loss: 1.3288 - val_accuracy: 0.3333 - val_loss: 1.3383
+Epoch 6/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3333 - loss: 1.2573 - val_accuracy: 0.3333 - val_loss: 1.2681
+Epoch 7/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3333 - loss: 1.2012 - val_accuracy: 0.3333 - val_loss: 1.2022
+Epoch 8/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3083 - loss: 1.1535 - val_accuracy: 0.2000 - val_loss: 1.1508
+Epoch 9/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.2083 - loss: 1.1159 - val_accuracy: 0.1667 - val_loss: 1.1120
+Epoch 10/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3417 - loss: 1.0891 - val_accuracy: 0.3333 - val_loss: 1.0812
+Epoch 11/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3750 - loss: 1.0692 - val_accuracy: 0.3667 - val_loss: 1.0575
+Epoch 12/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3333 - loss: 1.0517 - val_accuracy: 0.3667 - val_loss: 1.0416
+Epoch 13/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3250 - loss: 1.0388 - val_accuracy: 0.3667 - val_loss: 1.0249
+Epoch 14/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3250 - loss: 1.0250 - val_accuracy: 0.3667 - val_loss: 1.0105
+Epoch 15/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3250 - loss: 1.0123 - val_accuracy: 0.3667 - val_loss: 0.9968
+Epoch 16/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3250 - loss: 0.9989 - val_accuracy: 0.3667 - val_loss: 0.9831
+Epoch 17/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3250 - loss: 0.9861 - val_accuracy: 0.3667 - val_loss: 0.9696
+Epoch 18/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3250 - loss: 0.9731 - val_accuracy: 0.3667 - val_loss: 0.9557
+Epoch 19/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.3667 - loss: 0.9587 - val_accuracy: 0.4000 - val_loss: 0.9418
+Epoch 20/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.4250 - loss: 0.9449 - val_accuracy: 0.4333 - val_loss: 0.9270
+Epoch 21/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.5667 - loss: 0.9317 - val_accuracy: 0.7000 - val_loss: 0.9131
+Epoch 22/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6417 - loss: 0.9156 - val_accuracy: 0.7000 - val_loss: 0.8966
+Epoch 23/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6583 - loss: 0.9017 - val_accuracy: 0.7000 - val_loss: 0.8816
+Epoch 24/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6583 - loss: 0.8877 - val_accuracy: 0.7000 - val_loss: 0.8669
+Epoch 25/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6583 - loss: 0.8734 - val_accuracy: 0.7000 - val_loss: 0.8532
+Epoch 26/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6583 - loss: 0.8603 - val_accuracy: 0.7000 - val_loss: 0.8387
+Epoch 27/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6583 - loss: 0.8479 - val_accuracy: 0.7000 - val_loss: 0.8253
+Epoch 28/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6583 - loss: 0.8332 - val_accuracy: 0.7000 - val_loss: 0.8110
+Epoch 29/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6583 - loss: 0.8208 - val_accuracy: 0.7000 - val_loss: 0.7975
+Epoch 30/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6583 - loss: 0.8078 - val_accuracy: 0.7000 - val_loss: 0.7841
+Epoch 31/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6583 - loss: 0.7950 - val_accuracy: 0.7000 - val_loss: 0.7703
+Epoch 32/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6583 - loss: 0.7812 - val_accuracy: 0.7000 - val_loss: 0.7580
+Epoch 33/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6583 - loss: 0.7692 - val_accuracy: 0.7000 - val_loss: 0.7451
+Epoch 34/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6583 - loss: 0.7561 - val_accuracy: 0.7000 - val_loss: 0.7331
+Epoch 35/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6583 - loss: 0.7445 - val_accuracy: 0.7000 - val_loss: 0.7211
+Epoch 36/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 8ms/step - accuracy: 0.6750 - loss: 0.7315 - val_accuracy: 0.7000 - val_loss: 0.7090
+Epoch 37/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6750 - loss: 0.7198 - val_accuracy: 0.7000 - val_loss: 0.6965
+Epoch 38/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6750 - loss: 0.7082 - val_accuracy: 0.7000 - val_loss: 0.6854
+Epoch 39/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 11ms/step - accuracy: 0.6750 - loss: 0.6967 - val_accuracy: 0.7000 - val_loss: 0.6738
+Epoch 40/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 20ms/step - accuracy: 0.6750 - loss: 0.6854 - val_accuracy: 0.7000 - val_loss: 0.6621
+Epoch 41/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 12ms/step - accuracy: 0.6750 - loss: 0.6738 - val_accuracy: 0.7000 - val_loss: 0.6513
+Epoch 42/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 8ms/step - accuracy: 0.6833 - loss: 0.6635 - val_accuracy: 0.7333 - val_loss: 0.6419
+Epoch 43/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6833 - loss: 0.6532 - val_accuracy: 0.7333 - val_loss: 0.6310
+Epoch 44/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6833 - loss: 0.6430 - val_accuracy: 0.7333 - val_loss: 0.6213
+Epoch 45/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.6917 - loss: 0.6328 - val_accuracy: 0.7333 - val_loss: 0.6122
+Epoch 46/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.7000 - loss: 0.6237 - val_accuracy: 0.7333 - val_loss: 0.6019
+Epoch 47/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.7167 - loss: 0.6137 - val_accuracy: 0.7333 - val_loss: 0.5931
+Epoch 48/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.7167 - loss: 0.6051 - val_accuracy: 0.7333 - val_loss: 0.5850
+Epoch 49/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 7ms/step - accuracy: 0.7333 - loss: 0.5976 - val_accuracy: 0.7667 - val_loss: 0.5767
+Epoch 50/50
+[1m15/15[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 10ms/step - accuracy: 0.7333 - loss: 0.5883 - val_accuracy: 0.7667 - val_loss: 0.5680
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell"><h1>5. Evaluación del Modelo:</h1></div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [6]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>loss, accuracy = model.evaluate(X_test, y_test)
+print(f"Pérdida en prueba: {loss:.4f}")
+print(f"Precisión en prueba: {accuracy:.4f}")</pre></div>
+                <div class="output-area">
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-stream">[1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 476ms/step - accuracy: 0.7667 - loss: 0.5680
+Pérdida en prueba: 0.5680
+Precisión en prueba: 0.7667
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell">La precisión mide el porcentaje de predicciones correctas en el conjunto de prueba.<br>Una precisión de 76.67% es un buen resultado para este modelo simple en el dataset Iris, ya que supera significativamente un enfoque aleatorio en un problema de clasificación con 3 clases (donde la probabilidad aleatoria es aproximadamente 33.3%).<br>Esto sugiere que el modelo está aprendiendo de manera efectiva los patrones del dataset.</div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell"><h1>6. Interpretación de los Resultados</h1><br><br><strong>Pérdida en prueba (Loss): 0.5680</strong><br>La pérdida (loss) mide qué tan bien está funcionando el modelo en términos del error respecto a los datos de prueba.<br>Un valor de 0.5680 indica que el modelo ha reducido el error de predicción en el conjunto de prueba.<br><br><strong>Precisión en prueba (Accuracy): 0.7667 (76.67%)</strong><br>La precisión mide el porcentaje de predicciones correctas en el conjunto de prueba.<br>Una precisión de 76.67% es un buen resultado para este modelo simple en el dataset Iris, lo que indica que el modelo está aprendiendo de manera efectiva los patrones del dataset.</div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell"><h1>7. Posibles Causas del Bajo Desempeño</h1><br><br><strong>Datos Insuficientes o Preprocesamiento Inadecuado:</strong><br>*   El dataset Iris tiene pocas muestras (150 en total), lo que puede llevar a un modelo que no generaliza bien.<br>*   Posible falta de normalización de los datos de entrada.<br><br><strong>Hiperparámetros No Optimizados:</strong><br>*   El número de neuronas en la capa oculta (10) y las épocas (50) pueden no ser suficientes para que el modelo aprenda correctamente.<br>*   Ajustar parámetros como la tasa de aprendizaje, batch size o la cantidad de capas/neuronas podría mejorar el desempeño.<br><br><strong>Problemas en la Arquitectura del Modelo:</strong><br>*   El modelo es muy básico y puede no tener suficiente capacidad para capturar patrones complejos en los datos.<br><br><strong>Sobreajuste o Subajuste:</strong><br>*   Si el modelo tiene buena precisión en entrenamiento pero baja en prueba, puede ser sobreajuste.<br>*   Si tanto en entrenamiento como en prueba la precisión es baja, es un subajuste.</div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell"><h1>8. Preguntas de consulta:</h1></div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell"><h2>¿Por qué usamos ReLU y Softmax como funciones de activación?</h2><br><br>*   <strong>ReLU (Rectified Linear Unit)</strong>: Se utiliza comúnmente en las capas ocultas de las redes neuronales por varias razones:<br>    *   <strong>Simplicidad y Eficiencia Computacional:</strong> Es muy fácil de calcular ($f(x) = \max(0, x)$), lo que acelera el entrenamiento.<br>    *   <strong>Atenuación del Problema del Gradiente Desvaneciente:</strong> A diferencia de las funciones sigmoide o tanh, ReLU no satura para valores positivos grandes, lo que ayuda a mitigar el problema del gradiente desvaneciente en redes profundas.<br>    *   <strong>Esparcidad:</strong> Introduce esparcidad en la red al hacer que algunas neuronas tengan una activación de cero, lo que puede ayudar a que el modelo sea más eficiente y aprenda características más robustas.<br><br>*   <strong>Softmax:</strong> Se utiliza exclusivamente en la capa de salida de los modelos de clasificación multiclase (cuando hay más de dos clases).<br>    *   <strong>Probabilidades:</strong> Transforma las salidas de la capa anterior en una distribución de probabilidad sobre las diferentes clases. La suma de las salidas de Softmax para todas las clases es 1, lo que permite interpretarlas como la probabilidad de que una entrada pertenezca a cada clase.<br>    *   <strong>Clasificación Multiclase:</strong> Es ideal para tareas donde una entrada debe ser asignada a una y solo una de múltiples categorías.</div>
+            </div>
+        </div>
+        <div class="cell cell-markdown">
+            <div class="cell-prompt prompt-empty">&nbsp;</div>
+            <div class="cell-content">
+                <div class="markdown-cell"><h2>¿Cómo influye el número de épocas y el batch size en el desempeño del modelo?</h2><br><br><h3>Número de Épocas (Epochs)</h3><br><br>El número de épocas se refiere a la cantidad de veces que el algoritmo de entrenamiento verá todo el conjunto de datos de entrenamiento. Una época completa significa que cada ejemplo en el conjunto de entrenamiento ha tenido la oportunidad de actualizar los pesos del modelo.<br><br><strong>Influencia en el Desempeño:</strong><br><br>*   <strong>Demasiadas Épocas (Overfitting - Sobreajuste):</strong><br>    *   Si el número de épocas es demasiado alto, el modelo puede empezar a "memorizar" el ruido y las características específicas del conjunto de entrenamiento. Esto lleva a un rendimiento muy bueno en el conjunto de entrenamiento, pero un rendimiento pobre en datos nuevos (conjunto de prueba), lo que se conoce como sobreajuste.<br>    *   La pérdida en el conjunto de entrenamiento seguirá disminuyendo, pero la pérdida en el conjunto de prueba (validación) comenzará a aumentar después de cierto punto.<br><br>*   <strong>Pocas Épocas (Underfitting - Subajuste):</strong><br>    *   Si el número de épocas es demasiado bajo, el modelo no tendrá suficiente tiempo para aprender los patrones subyacentes en los datos. No convergerá a una solución óptima y tanto la pérdida de entrenamiento como la de validación serán altas, lo que indica un subajuste.<br>    *   El modelo no alcanzará su máximo potencial de rendimiento.<br><br>*   <strong>Equilibrio:</strong> El objetivo es encontrar un número de épocas donde el modelo haya aprendido lo suficiente para generalizar bien a nuevos datos sin sobreajustarse. Esto a menudo se determina monitoreando la pérdida o la precisión en un conjunto de validación y deteniendo el entrenamiento cuando el rendimiento en este conjunto deja de mejorar (técnica de "early stopping").<br><br><h3>Batch Size (Tamaño del Lote)</h3><br><br>El batch size es el número de ejemplos de entrenamiento que se procesan antes de que los parámetros internos del modelo se actualicen. En otras palabras, es la cantidad de muestras que se alimentan a la red en una sola pasada de propagación hacia adelante y hacia atrás.<br><br><strong>Influencia en el Desempeño:</strong><br><br>*   <strong>Batch Size Grande:</strong><br>    *   <strong>Procesamiento más Rápido por Época:</strong> Se requieren menos actualizaciones de los pesos por época, lo que puede acelerar el tiempo total de una época.<br>    *   <strong>Estimación de Gradiente más Estable:</strong> El gradiente calculado a partir de un lote grande es una aproximación más precisa del gradiente real del conjunto de datos completo, lo que puede llevar a una trayectoria de optimización más suave y estable.<br>    *   <strong>Riesgo de Mínimos Locales:</strong> Puede dificultar que el modelo escape de mínimos locales (puntos donde la pérdida es baja pero no la más baja posible) en la superficie de pérdida.<br>    *   <strong>Requiere más Memoria:</strong> Un lote más grande necesita más memoria, lo que puede ser una limitación.<br><br>*   <strong>Batch Size Pequeño (Stochastic Gradient Descent o mini-batches):</strong><br>    *   <strong>Procesamiento más Lento por Época:</strong> Se realizan más actualizaciones de los pesos por época, lo que puede ralentizar el tiempo total de una época, pero a menudo conduce a una convergencia más rápida hacia una buena solución.<br>    *   <strong>Estimación de Gradiente más Ruidosa:</strong> El gradiente es más ruidoso y menos preciso, lo que puede introducir más fluctuaciones en la trayectoria de optimización. Estas fluctuaciones, sin embargo, pueden ayudar al modelo a escapar de mínimos locales y encontrar mejores soluciones.<br>    *   <strong>Regularización Implícita:</strong> La naturaleza ruidosa del gradiente puede actuar como una forma de regularización, ayudando a prevenir el sobreajuste.<br>    *   <strong>Menos Memoria:</strong> Requiere menos memoria, lo que permite entrenar modelos más grandes en hardware con recursos limitados.<br><br>*   <strong>Equilibrio:</strong> La elección del batch size es un hiperparámetro crucial. Un batch size muy pequeño puede hacer que el entrenamiento sea muy lento y ruidoso, mientras que un batch size muy grande puede hacer que el modelo se estanque en un mínimo local o no generalice bien. A menudo, se encuentra un equilibrio en tamaños de lote intermedios (mini-batches), como 32, 64 o 128, que ofrecen un buen compromiso entre la eficiencia computacional y la calidad del aprendizaje.</div>
+            </div>
+        </div>
+    </div>
+    <footer class="export-footer">
+        Exported with <a href="https://www.runcell.dev/tool/ipynb-to-html">runcell</a> — convert notebooks to HTML or PDF anytime at runcell.dev.
+    </footer>
+</body>
+</html>

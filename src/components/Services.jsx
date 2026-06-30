@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Services = () => {
   return (
@@ -159,11 +160,32 @@ const Services = () => {
         </div>
 
       </div>
+
+      {/* Botón Ver Proyectos con Lazo */}
+      <div className="fade-up-element" style={styles.buttonWrapper}>
+        <div style={styles.lazoLine}></div>
+        <Link to="/trabajos" className="btn btn-glass" style={{ margin: '0 2rem', marginTop: 0 }}>
+          Ver Proyectos
+        </Link>
+        <div style={styles.lazoLine}></div>
+      </div>
     </section>
   );
 };
 
 const styles = {
+  buttonWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '6rem',
+    width: '100%',
+  },
+  lazoLine: {
+    flex: 1,
+    height: '1px',
+    background: 'linear-gradient(90deg, transparent, rgba(94, 234, 212, 0.5), transparent)',
+  },
   servicesWrapper: {
     display: 'flex',
     flexDirection: 'column',

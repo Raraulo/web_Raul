@@ -12,9 +12,9 @@ const WhyHireMe = () => {
   return (
     <section id="why" className="section container">
       <h2 className="section-title fade-up-element">¿Por qué trabajar conmigo?</h2>
-      
+
       <div style={styles.grid}>
-        
+
         <div className="fade-up-element" style={styles.item}>
           <div style={styles.icon}><TargetIcon /></div>
           <div>

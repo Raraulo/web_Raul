@@ -1,17 +1,15 @@
 import React, { useEffect, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Nav from './components/Nav';
-import Hero from './components/Hero';
-import About from './components/About';
-import Services from './components/Services';
-import Experience from './components/Experience';
-import WhyHireMe from './components/WhyHireMe';
-import Contact from './components/Contact';
 import Footer from './components/Footer';
+import Home from './pages/Home';
+import Trabajos from './pages/Trabajos';
 
-function App() {
+function AppContent() {
   const cursorRef = useRef(null);
   const starsRef = useRef(null);
   const stars2Ref = useRef(null);
+  const location = useLocation();
 
   useEffect(() => {
     const observerCallback = (entries) => {
@@ -35,7 +33,7 @@ function App() {
     return () => {
       elements.forEach(el => observer.unobserve(el));
     };
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -72,7 +70,7 @@ function App() {
 
     window.addEventListener('mousemove', handleMouseMove);
     
-    const interactiveElements = document.querySelectorAll('a, button, .btn');
+    const interactiveElements = document.querySelectorAll('a, button, .btn, .carousel-item');
     interactiveElements.forEach(el => {
       el.addEventListener('mouseenter', handleMouseEnter);
       el.addEventListener('mouseleave', handleMouseLeave);
@@ -85,7 +83,7 @@ function App() {
         el.removeEventListener('mouseleave', handleMouseLeave);
       });
     };
-  }, []);
+  }, [location.pathname]);
 
   return (
     <>
@@ -94,15 +92,21 @@ function App() {
       <div className="stars2" ref={stars2Ref}></div>
       <Nav />
       <main>
-        <Hero />
-        <About />
-        <Services />
-        <Experience />
-        <WhyHireMe />
-        <Contact />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/trabajos" element={<Trabajos />} />
+        </Routes>
       </main>
       <Footer />
     </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
   );
 }
 

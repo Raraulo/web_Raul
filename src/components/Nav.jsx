@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Nav = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -14,6 +15,22 @@ const Nav = () => {
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
+  };
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNavClick = (e, hash) => {
+    e.preventDefault();
+    closeMobileMenu();
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -132,11 +149,11 @@ const Nav = () => {
         
         {/* Desktop Links */}
         <div className="nav-links">
-          <a href="#about" className="nav-link" onClick={closeMobileMenu}>Sobre Mí</a>
-          <a href="#services" className="nav-link" onClick={closeMobileMenu}>Especialidades</a>
-          <a href="#experience" className="nav-link" onClick={closeMobileMenu}>Experiencia</a>
-          <a href="#why" className="nav-link" onClick={closeMobileMenu}>¿Por qué?</a>
-          <a href="#contact" className="btn btn-primary nav-btn" onClick={closeMobileMenu}>Contacto</a>
+          <a href="#about" className="nav-link" onClick={(e) => handleNavClick(e, '#about')}>Sobre Mí</a>
+          <a href="#services" className="nav-link" onClick={(e) => handleNavClick(e, '#services')}>Especialidades</a>
+          <a href="#experience" className="nav-link" onClick={(e) => handleNavClick(e, '#experience')}>Experiencia</a>
+          <a href="#why" className="nav-link" onClick={(e) => handleNavClick(e, '#why')}>¿Por qué?</a>
+          <a href="#contact" className="btn btn-primary nav-btn" onClick={(e) => handleNavClick(e, '#contact')}>Contacto</a>
         </div>
 
         {/* Hamburger Button */}
@@ -162,11 +179,11 @@ const Nav = () => {
 
       {/* Mobile Menu */}
       <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
-        <a href="#about" className="mobile-menu-link" onClick={closeMobileMenu}>Sobre Mí</a>
-        <a href="#services" className="mobile-menu-link" onClick={closeMobileMenu}>Especialidades</a>
-        <a href="#experience" className="mobile-menu-link" onClick={closeMobileMenu}>Experiencia</a>
-        <a href="#why" className="mobile-menu-link" onClick={closeMobileMenu}>¿Por qué?</a>
-        <a href="#contact" className="mobile-menu-link mobile-menu-btn" onClick={closeMobileMenu}>Contacto</a>
+        <a href="#about" className="mobile-menu-link" onClick={(e) => handleNavClick(e, '#about')}>Sobre Mí</a>
+        <a href="#services" className="mobile-menu-link" onClick={(e) => handleNavClick(e, '#services')}>Especialidades</a>
+        <a href="#experience" className="mobile-menu-link" onClick={(e) => handleNavClick(e, '#experience')}>Experiencia</a>
+        <a href="#why" className="mobile-menu-link" onClick={(e) => handleNavClick(e, '#why')}>¿Por qué?</a>
+        <a href="#contact" className="mobile-menu-link mobile-menu-btn" onClick={(e) => handleNavClick(e, '#contact')}>Contacto</a>
       </div>
     </nav>
   );
