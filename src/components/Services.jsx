@@ -4,9 +4,9 @@ const Services = () => {
   return (
     <section id="services" className="section container">
       <h2 className="section-title fade-up-element">Especialidades</h2>
-      
+
       <div style={styles.servicesWrapper}>
-        
+
         {/* Service 1: Mobile */}
         <div className="fade-up-element" style={styles.serviceRow}>
           <div style={{ ...styles.lottieCol, flex: '2 1 350px' }}>
@@ -109,7 +109,6 @@ const Services = () => {
                 <span style={styles.techTag}>OWASP</span>
                 <span style={styles.techTag}>CI/CD</span>
                 <span style={styles.techTag}>Git</span>
-                <span style={styles.techTag}>AWS</span>
                 <span style={styles.techTag}>Pruebas Manuales</span>
                 <span style={styles.techTag}>Casos de Prueba</span>
                 <span style={styles.techTag}>TestRail</span>
@@ -122,7 +121,7 @@ const Services = () => {
         </div>
 
         {/* Service 4: Data Science & Machine Learning */}
-        <div className="fade-up-element" style={styles.serviceRow}>
+        <div className="fade-up-element" style={{ ...styles.serviceRow, ...styles.rowReverse }}>
           <div style={{ ...styles.lottieCol, background: 'transparent' }}>
             <lottie-player
               src="/lottie/datos.json"
