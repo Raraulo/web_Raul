@@ -11,6 +11,14 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Lottie Player -->
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <style>
+      lottie-player {
+        background: transparent !important;
+      }
+      lottie-player::part(canvas) {
+        background: transparent !important;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
