@@ -123,12 +123,12 @@ const Services = () => {
 
         {/* Service 4: Data Science & Machine Learning */}
         <div className="fade-up-element" style={styles.serviceRow}>
-          <div style={styles.lottieCol}>
+          <div style={{ ...styles.lottieCol, background: 'transparent' }}>
             <lottie-player
               src="/lottie/datos.json"
               background="transparent"
               speed="1"
-              style={{ width: '100%', height: 'min(400px, 70vh)' }}
+              style={{ width: '100%', height: 'min(400px, 70vh)', background: 'transparent' }}
               loop
               autoplay
             ></lottie-player>
