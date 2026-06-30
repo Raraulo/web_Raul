@@ -121,6 +121,44 @@ const Services = () => {
           </div>
         </div>
 
+        {/* Service 4: Data Science & Machine Learning */}
+        <div className="fade-up-element" style={styles.serviceRow}>
+          <div style={styles.lottieCol}>
+            <lottie-player
+              src="/lottie/datos.json"
+              background="transparent"
+              speed="1"
+              style={{ width: '100%', height: 'min(400px, 70vh)' }}
+              loop
+              autoplay
+            ></lottie-player>
+          </div>
+          <div style={styles.textCol}>
+            <h3 style={styles.title}>Analista en Ciencia de Datos, Machine Learning y Big Data</h3>
+            <p style={styles.desc}>
+              Con sólida experiencia en el ciclo completo de análisis y transformación de información. Destacado por desarrollar soluciones escalables que van desde la ingesta, preprocesamiento y visualización de grandes volúmenes de datos (usando Apache Spark), hasta la implementación de modelos predictivos y de segmentación no supervisada (Redes Neuronales, K-Means, Regresiones y Árboles de Decisión). Orientado a optimizar procesos, automatizar la toma de decisiones y generar valor estratégico a partir de los datos.
+            </p>
+            <div className="marquee-container">
+              <div className="marquee-content">
+                <span style={styles.techTag}>Python</span>
+                <span style={styles.techTag}>Apache Spark</span>
+                <span style={styles.techTag}>SparkSQL</span>
+                <span style={styles.techTag}>Scikit-Learn</span>
+                <span style={styles.techTag}>Pandas</span>
+                <span style={styles.techTag}>NumPy</span>
+                <span style={styles.techTag}>PyTorch</span>
+                <span style={styles.techTag}>Python</span>
+                <span style={styles.techTag}>Apache Spark</span>
+                <span style={styles.techTag}>SparkSQL</span>
+                <span style={styles.techTag}>Scikit-Learn</span>
+                <span style={styles.techTag}>Pandas</span>
+                <span style={styles.techTag}>NumPy</span>
+                <span style={styles.techTag}>PyTorch</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
   );
