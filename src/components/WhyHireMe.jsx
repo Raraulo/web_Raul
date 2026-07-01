@@ -1,4 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 /* ---------------------------------------------------------------
    Iconografía — un ícono distinto por módulo, no un genérico repetido
@@ -39,7 +43,9 @@ const AvailabilityIcon = () => (
 
 /* ---------------------------------------------------------------
    Contenido — cada módulo lleva un id de sistema real (no decorativo):
-   referencia directamente la competencia que describe.
+   referencia directamente la competencia que describe. El framing de
+   "módulos cargados" (estilo modprobe/lsmod) es el mismo lenguaje que
+   ya usa el id MOD.0N, ahora llevado al resto de la sección.
 --------------------------------------------------------------- */
 
 const MODULES = [
@@ -75,32 +81,90 @@ const MODULES = [
 
 const WhyHireMe = () => {
   const sectionRef = useRef(null);
-  const [visible, setVisible] = useState(false);
+  const cardRefs = useRef([]);
+  const loaderRefs = useRef([]);
+  const statusDotRefs = useRef([]);
 
-  useEffect(() => {
-    const node = sectionRef.current;
-    if (!node) return;
+  useLayoutEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
+    const ctx = gsap.context(() => {
+      if (prefersReducedMotion) {
+        gsap.set(cardRefs.current, { opacity: 1, y: 0, rotateX: 0, rotateY: 0 });
+        gsap.set(loaderRefs.current, { scaleX: 1 });
+        gsap.set(statusDotRefs.current, { scale: 1 });
+        return;
+      }
 
-    observer.observe(node);
-    return () => observer.disconnect();
+      const cleanups = [];
+
+      MODULES.forEach((_, i) => {
+        const card = cardRefs.current[i];
+        const loader = loaderRefs.current[i];
+        const dot = statusDotRefs.current[i];
+        if (!card) return;
+
+        gsap.set(card, { transformPerspective: 800 });
+
+        // ---- "Module load" sequence: bar fills, card lands, status dot pops ----
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: card, start: 'top 85%' },
+        });
+
+        tl.fromTo(loader, { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: 'power2.out' })
+          .fromTo(
+            card,
+            { opacity: 0, y: 26 },
+            { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
+            '-=0.15'
+          )
+          .fromTo(dot, { scale: 0 }, { scale: 1, duration: 0.35, ease: 'back.out(2.4)' }, '-=0.3');
+
+        // Ambient pulse once loaded, staggered so cards don't blink in sync
+        gsap.to(dot, {
+          scale: 1.5,
+          opacity: 0.4,
+          duration: 1,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+          delay: 1 + i * 0.25,
+          scrollTrigger: { trigger: card, start: 'top 85%' },
+        });
+
+        // ---- Cursor tilt --------------------------------------------------
+        const rotateX = gsap.quickTo(card, 'rotateX', { duration: 0.4, ease: 'power3' });
+        const rotateY = gsap.quickTo(card, 'rotateY', { duration: 0.4, ease: 'power3' });
+
+        const handleMove = (e) => {
+          const rect = card.getBoundingClientRect();
+          const relX = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+          const relY = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+          rotateY(relX * 5);
+          rotateX(relY * -5);
+        };
+        const handleLeave = () => {
+          rotateX(0);
+          rotateY(0);
+        };
+        card.addEventListener('mousemove', handleMove);
+        card.addEventListener('mouseleave', handleLeave);
+        cleanups.push(() => {
+          card.removeEventListener('mousemove', handleMove);
+          card.removeEventListener('mouseleave', handleLeave);
+        });
+      });
+
+      return () => cleanups.forEach((fn) => fn());
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      id="why"
-      className={`section container whm-section${visible ? ' is-visible' : ''}`}
-      ref={sectionRef}
-    >
+    <section id="why" className="section container whm-section" ref={sectionRef}>
       <style>{`
         .whm-section {
           --whm-accent: var(--secondary, #FF8A50);
@@ -155,9 +219,19 @@ const WhyHireMe = () => {
           background: linear-gradient(180deg, var(--whm-panel) 0%, #0e1319 100%);
           border: 1px solid var(--whm-border);
           border-radius: 4px;
-          opacity: 0;
-          transform: translateY(18px);
-          transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+          overflow: hidden;
+          transform-style: preserve-3d;
+          will-change: transform;
+          transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .whm-loader {
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 2px;
+          background: linear-gradient(90deg, var(--whm-accent), transparent);
+          transform-origin: left;
+          transform: scaleX(0);
         }
 
         .whm-card::before {
@@ -168,11 +242,6 @@ const WhyHireMe = () => {
           background: linear-gradient(90deg, transparent, var(--whm-accent), transparent);
           opacity: 0;
           transition: opacity 0.3s ease;
-        }
-
-        .whm-section.is-visible .whm-card {
-          opacity: 1;
-          transform: translateY(0);
         }
 
         .whm-card:hover {
@@ -187,6 +256,21 @@ const WhyHireMe = () => {
           align-items: center;
           justify-content: space-between;
           gap: 1rem;
+        }
+
+        .whm-tag-group {
+          display: flex;
+          align-items: center;
+          gap: 0.55rem;
+        }
+
+        .whm-status-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: var(--whm-accent);
+          box-shadow: 0 0 8px var(--whm-accent);
+          flex-shrink: 0;
         }
 
         .whm-tag {
@@ -209,7 +293,7 @@ const WhyHireMe = () => {
         }
 
         .whm-card:hover .whm-icon {
-          transform: translateY(-2px);
+          transform: translateY(-2px) translateZ(20px);
           background: rgba(255, 138, 80, 0.12);
         }
 
@@ -234,27 +318,36 @@ const WhyHireMe = () => {
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .whm-card,
-          .whm-eyebrow-dot { transition: none; animation: none; }
-          .whm-section.is-visible .whm-card { opacity: 1; transform: none; }
+          .whm-eyebrow-dot { animation: none; }
         }
       `}</style>
 
-   
-      <h2 className="section-title fade-up-element">
-        Cuatro razones para sumarme a tu equipo
-      </h2>
+      <div className="whm-eyebrow">
+        <span className="whm-eyebrow-dot"></span>
+        &gt;&nbsp;modprobe --list-loaded
+      </div>
+
+      <h2 className="section-title">Cuatro razones para sumarme a tu equipo</h2>
 
       <div className="whm-grid">
-        {MODULES.map(({ id, tag, icon: Icon, title, desc }) => (
-          <article key={id} className="whm-card">
+        {MODULES.map(({ id, tag, icon: Icon, title, desc }, i) => (
+          <article
+            key={id}
+            ref={(el) => (cardRefs.current[i] = el)}
+            className="whm-card"
+          >
+            <div ref={(el) => (loaderRefs.current[i] = el)} className="whm-loader"></div>
+
             <div className="whm-card-head">
               <span className="whm-icon">
                 <Icon />
               </span>
-              <span className="whm-tag">
-                {id} · <span>{tag}</span>
-              </span>
+              <div className="whm-tag-group">
+                <span ref={(el) => (statusDotRefs.current[i] = el)} className="whm-status-dot"></span>
+                <span className="whm-tag">
+                  {id} · <span>{tag}</span>
+                </span>
+              </div>
             </div>
             <h3 className="whm-title">{title}</h3>
             <p className="whm-desc">{desc}</p>

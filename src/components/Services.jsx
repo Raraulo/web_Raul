@@ -1,179 +1,286 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+/**
+ * Services — read as a live services registry, not a stacked feature list.
+ *
+ * Signature idea: "Especialidades" doubles as literal system services —
+ * each row gets a `[0N]` index and an ACTIVO status dot, like a
+ * `systemctl status` readout. This keeps the numbering honest (it's a real,
+ * fixed list of four specialties) instead of decorative 01/02/03 markers.
+ * Rows alternate a directional slide-in that mirrors their reversed layout,
+ * marquees get soft edge masks instead of a hard cut, and the closing CTA
+ * is magnetic with lazo lines that draw themselves in on scroll.
+ *
+ * Requires: gsap (ScrollTrigger submodule, already bundled with gsap).
+ */
+
+const SERVICES = [
+  {
+    index: '01',
+    status: 'ACTIVO',
+    title: 'Ingeniería Móvil Multiplataforma',
+    desc: 'Diseño y desarrollo aplicaciones móviles nativas y multiplataforma con React Native y Flutter, desde la arquitectura inicial hasta lista para su despliegue. Implemento integración con APIs REST/GraphQL, bases de datos locales y en tiempo real (SQLite, Firebase, Supabase), notificaciones push (FCM, APNs), además de testing de usabilidad con buenas prácticas UI/UX y rendimiento para garantizar fiabilidad en todos los dispositivos.',
+    techs: ['React Native', 'Expo', 'Flutter', 'Firebase', 'Supabase', 'Fastlane', 'JWT', 'SQLite'],
+    lottieSrc: '/lottie/mobile.json',
+    lottieHeight: 'min(600px, 80vh)',
+    lottieFlex: '2 1 350px',
+    reverse: false,
+  },
+  {
+    index: '02',
+    status: 'ACTIVO',
+    title: 'Desarrollo Web & Dashboards',
+    desc: 'Construyo plataformas web empresariales completas, desde landing pages altamente optimizadas para SEO y conversión hasta dashboards de control en tiempo real con visualizaciones avanzadas (D3.js, Chart.js). Diseño arquitecturas escalables (monolitos modularizados o microservicios) con Node.js/Express, Go o Python (FastAPI), usando bases de datos relacionales (PostgreSQL, SQL Server) y no relacionales (MongoDB, Redis). Implemento autenticación y autorización segura, validación de datos, cacheo, y despliegue en cloud (Vercel, AWS, Railway).',
+    techs: ['React/Next.js', 'Angular', 'Node.js/Express', 'Go', 'PostgreSQL', 'MongoDB', 'Redis', 'Chart.js'],
+    lottieSrc: '/lottie/web.json',
+    lottieHeight: 'min(350px, 60vh)',
+    reverse: true,
+  },
+  {
+    index: '03',
+    status: 'ACTIVO',
+    title: 'QA, Seguridad & Despliegue',
+    desc: 'Garantizo la calidad y seguridad de tus sistemas con procesos rigurosos de QA: diseño de casos de prueba funcionales y de regresión, pruebas manuales exploratorias, y automatización básica. Además, validación de inputs, sanitización de datos, y protección contra ataques comunes. Configuro pipelines CI/CD para automatizar builds, tests y despliegues en entornos de staging y producción, con control de versiones (Git) y gestión de cambios.',
+    techs: ['Pruebas Manuales', 'Casos de Prueba', 'TestRail', 'Jira', 'OWASP', 'CI/CD', 'Git'],
+    lottieSrc: '/lottie/hacker.json',
+    lottieHeight: 'min(350px, 60vh)',
+    reverse: false,
+  },
+  {
+    index: '04',
+    status: 'ACTIVO',
+    title: 'Analista en Ciencia de Datos, Machine Learning y Big Data',
+    desc: 'Sólida experiencia en el ciclo completo de análisis y transformación de información. Desarrollo soluciones escalables que van desde la ingesta, preprocesamiento y visualización de grandes volúmenes de datos (usando Apache Spark), hasta la implementación de modelos predictivos y de segmentación no supervisada (Redes Neuronales, K-Means, Regresiones y Árboles de Decisión). Orientado a optimizar procesos, automatizar la toma de decisiones y generar valor estratégico a partir de los datos.',
+    techs: ['Python', 'Apache Spark', 'SparkSQL', 'Scikit-Learn', 'Pandas', 'NumPy', 'PyTorch'],
+    lottieSrc: '/lottie/datos.json',
+    lottieHeight: 'min(400px, 70vh)',
+    reverse: true,
+  },
+];
 
 const Services = () => {
+  const sectionRef = useRef(null);
+  const rowRefs = useRef([]);
+  const lottieColRefs = useRef([]);
+  const textColRefs = useRef([]);
+  const buttonWrapRef = useRef(null);
+  const ctaRef = useRef(null);
+  const lazoRefs = useRef([]);
+
+  useLayoutEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    const ctx = gsap.context(() => {
+      if (prefersReducedMotion) {
+        gsap.set([...lottieColRefs.current, ...textColRefs.current, buttonWrapRef.current], {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+        });
+        gsap.set(lazoRefs.current, { scaleX: 1 });
+        return;
+      }
+
+      // ---- Per-row choreography: alternating slide-in --------------------
+      SERVICES.forEach((service, i) => {
+        const row = rowRefs.current[i];
+        const lottieCol = lottieColRefs.current[i];
+        const textCol = textColRefs.current[i];
+        if (!row || !lottieCol || !textCol) return;
+
+        const dir = service.reverse ? 1 : -1; // lottie slides from the side it visually sits on
+
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: row, start: 'top 78%' },
+          defaults: { ease: 'power3.out', duration: 0.8 },
+        });
+
+        tl.fromTo(
+          lottieCol,
+          { opacity: 0, x: dir * -50, scale: 0.94 },
+          { opacity: 1, x: 0, scale: 1 },
+          0
+        ).fromTo(
+          textCol.children,
+          { opacity: 0, x: dir * 30 },
+          { opacity: 1, x: 0, stagger: 0.12 },
+          0.1
+        );
+      });
+
+      // ---- Status dots: staggered pulse start so the row doesn't feel synced
+      gsap.utils.toArray('.svc-status-dot').forEach((dot, i) => {
+        gsap.to(dot, {
+          scale: 1.5,
+          opacity: 0.4,
+          duration: 1,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+          delay: i * 0.3,
+        });
+      });
+
+      // ---- Closing CTA: lazo lines draw in, button settles -----------------
+      gsap.fromTo(
+        lazoRefs.current,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          duration: 0.9,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: buttonWrapRef.current, start: 'top 90%' },
+        }
+      );
+      gsap.fromTo(
+        ctaRef.current,
+        { opacity: 0, y: 16 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: buttonWrapRef.current, start: 'top 90%' },
+        }
+      );
+
+      // ---- Magnetic CTA ------------------------------------------------
+      const cta = ctaRef.current;
+      let cleanupCta = () => {};
+      if (cta) {
+        const magnetX = gsap.quickTo(cta, 'x', { duration: 0.4, ease: 'power3' });
+        const magnetY = gsap.quickTo(cta, 'y', { duration: 0.4, ease: 'power3' });
+        const handleMove = (e) => {
+          const rect = cta.getBoundingClientRect();
+          magnetX((e.clientX - (rect.left + rect.width / 2)) * 0.3);
+          magnetY((e.clientY - (rect.top + rect.height / 2)) * 0.3);
+        };
+        const handleLeave = () => {
+          magnetX(0);
+          magnetY(0);
+        };
+        cta.addEventListener('mousemove', handleMove);
+        cta.addEventListener('mouseleave', handleLeave);
+        cleanupCta = () => {
+          cta.removeEventListener('mousemove', handleMove);
+          cta.removeEventListener('mouseleave', handleLeave);
+        };
+      }
+
+      return () => cleanupCta();
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="services" className="section container">
-      <h2 className="section-title fade-up-element">Especialidades</h2>
+    <section id="services" ref={sectionRef} className="section container" style={styles.section}>
+      <style>{`
+        .svc-status-dot { will-change: transform, opacity; }
+
+        .svc-marquee-mask {
+          -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .svc-status-dot { animation: none !important; }
+        }
+      `}</style>
+
+      <div style={styles.eyebrow}>
+        <span style={styles.eyebrowPrompt}>&gt;</span>&nbsp;systemctl status --specialties
+      </div>
+      <h2 className="section-title" style={styles.title}>Especialidades</h2>
 
       <div style={styles.servicesWrapper}>
+        {SERVICES.map((service, i) => (
+          <div
+            key={service.index}
+            ref={(el) => (rowRefs.current[i] = el)}
+            style={{
+              ...styles.serviceRow,
+              ...(service.reverse ? styles.rowReverse : null),
+            }}
+          >
+            <div
+              ref={(el) => (lottieColRefs.current[i] = el)}
+              style={{
+                ...styles.lottieCol,
+                ...(service.lottieFlex ? { flex: service.lottieFlex } : null),
+              }}
+            >
+              <lottie-player
+                src={service.lottieSrc}
+                background="transparent"
+                speed="1"
+                style={{ width: '100%', height: service.lottieHeight, background: 'transparent' }}
+                loop
+                autoplay
+              ></lottie-player>
+            </div>
 
-        {/* Service 1: Mobile */}
-        <div className="fade-up-element" style={styles.serviceRow}>
-          <div style={{ ...styles.lottieCol, flex: '2 1 350px' }}>
-            <lottie-player
-              src="/lottie/mobile.json"
-              background="transparent"
-              speed="1"
-              style={{ width: '100%', height: 'min(600px, 80vh)' }}
-              loop
-              autoplay
-            ></lottie-player>
-          </div>
-          <div style={styles.textCol}>
-            <h3 style={styles.title}>Ingeniería Móvil Multiplataforma</h3>
-            <p style={styles.desc}>
-              Diseño y desarrollar aplicaciones móviles nativas y multiplataforma con React Native y Flutter, desde la arquitectura inicial hasta lista para su despliegue. Implemento integración con APIs REST/GraphQL, bases de datos locales y en tiempo real (SQLite, Firebase, Supabase), notificaciones push (FCM, APNs) ademas testing de usabilidad con buenas practicas UI/UX y rendimiento para garantizar fiabilidad en todos los dispositivos.
-            </p>
-            <div className="marquee-container">
-              <div className="marquee-content">
-                <span style={styles.techTag}>React Native</span>
-                <span style={styles.techTag}>Expo</span>
-                <span style={styles.techTag}>Flutter</span>
-                <span style={styles.techTag}>Firebase</span>
-                <span style={styles.techTag}>Supabase</span>
-                <span style={styles.techTag}>Fastlane</span>
-                <span style={styles.techTag}>JWT</span>
-                <span style={styles.techTag}>SQLite</span>
-                <span style={styles.techTag}>React Native</span>
-                <span style={styles.techTag}>Expo</span>
-                <span style={styles.techTag}>Flutter</span>
-                <span style={styles.techTag}>Firebase</span>
-                <span style={styles.techTag}>Supabase</span>
-                <span style={styles.techTag}>Fastlane</span>
+            <div ref={(el) => (textColRefs.current[i] = el)} style={styles.textCol}>
+              <div style={styles.serviceMeta}>
+                <span style={styles.serviceIndex}>[{service.index}]</span>
+                <span className="svc-status-dot" style={styles.statusDot}></span>
+                <span style={styles.statusLabel}>{service.status}</span>
+              </div>
+
+              <h3 style={styles.serviceTitle}>{service.title}</h3>
+              <p style={styles.desc}>{service.desc}</p>
+
+              <div className="marquee-container svc-marquee-mask">
+                <div className="marquee-content">
+                  {[...service.techs, ...service.techs].map((tech, j) => (
+                    <span key={`${tech}-${j}`} style={styles.techTag}>
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Service 2: Web */}
-        <div className="fade-up-element" style={{ ...styles.serviceRow, ...styles.rowReverse }}>
-          <div style={styles.lottieCol}>
-            <lottie-player
-              src="/lottie/web.json"
-              background="transparent"
-              speed="1"
-              style={{ width: '100%', height: 'min(350px, 60vh)' }}
-              loop
-              autoplay
-            ></lottie-player>
-          </div>
-          <div style={styles.textCol}>
-            <h3 style={styles.title}>Desarrollo Web & Dashboards</h3>
-            <p style={styles.desc}>
-              Construyo plataformas web empresariales completas, desde landing pages altamente optimizadas para SEO y conversión hasta dashboards de control en tiempo real con visualizaciones avanzadas (D3.js, Chart.js). Diseño arquitecturas escalables (monolitos modularizados o microservicios) con Node.js/Express, Go o Python (FastAPI), usando bases de datos relacionales (PostgreSQL, SQL Server) y no relacionales (MongoDB, Redis). Implemento autenticación y autorización segura, validación de datos, cacheo, y despliegue en cloud (Vercel, AWS, Railway). Aplico principios de UX/UI para interfaces intuitivas y accesibles.
-            </p>
-            <div className="marquee-container">
-              <div className="marquee-content">
-                <span style={styles.techTag}>React/Next.js</span>
-                <span style={styles.techTag}>Angular</span>
-                <span style={styles.techTag}>Node.js/Express</span>
-                <span style={styles.techTag}>Go</span>
-                <span style={styles.techTag}>PostgreSQL</span>
-                <span style={styles.techTag}>MongoDB</span>
-                <span style={styles.techTag}>Redis</span>
-                <span style={styles.techTag}>Chart.js</span>
-                <span style={styles.techTag}>React/Next.js</span>
-                <span style={styles.techTag}>Angular</span>
-                <span style={styles.techTag}>Node.js/Express</span>
-                <span style={styles.techTag}>Go</span>
-                <span style={styles.techTag}>PostgreSQL</span>
-                <span style={styles.techTag}>MongoDB</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Service 3: QA & Security */}
-        <div className="fade-up-element" style={styles.serviceRow}>
-          <div style={styles.lottieCol}>
-            <lottie-player
-              src="/lottie/hacker.json"
-              background="transparent"
-              speed="1"
-              style={{ width: '100%', height: 'min(350px, 60vh)' }}
-              loop
-              autoplay
-            ></lottie-player>
-          </div>
-          <div style={styles.textCol}>
-            <h3 style={styles.title}>QA, Seguridad & Despliegue</h3>
-            <p style={styles.desc}>
-              Garantizo la calidad y seguridad de tus sistemas con procesos rigurosos de QA: diseño de casos de prueba funcionales y de regresión, pruebas manuales exploratorias, y automatización básica.Ademas validación de inputs, sanitización de datos, y protección contra ataques comunes. Configuro pipelines CI/CD para automatizar builds, tests y despliegues en entornos de staging y producción, con control de versiones (Git) y gestión de cambios. Aplico monitoreo básico y logging para asegurar la disponibilidad y rendimiento de tus aplicaciones.
-            </p>
-            <div className="marquee-container">
-              <div className="marquee-content">
-                <span style={styles.techTag}>Pruebas Manuales</span>
-                <span style={styles.techTag}>Casos de Prueba</span>
-                <span style={styles.techTag}>TestRail</span>
-                <span style={styles.techTag}>Jira</span>
-                <span style={styles.techTag}>OWASP</span>
-                <span style={styles.techTag}>CI/CD</span>
-                <span style={styles.techTag}>Git</span>
-                <span style={styles.techTag}>Pruebas Manuales</span>
-                <span style={styles.techTag}>Casos de Prueba</span>
-                <span style={styles.techTag}>TestRail</span>
-                <span style={styles.techTag}>Jira</span>
-                <span style={styles.techTag}>OWASP</span>
-                <span style={styles.techTag}>CI/CD</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Service 4: Data Science & Machine Learning */}
-        <div className="fade-up-element" style={{ ...styles.serviceRow, ...styles.rowReverse }}>
-          <div style={{ ...styles.lottieCol, background: 'transparent' }}>
-            <lottie-player
-              src="/lottie/datos.json"
-              background="transparent"
-              speed="1"
-              style={{ width: '100%', height: 'min(400px, 70vh)', background: 'transparent' }}
-              loop
-              autoplay
-            ></lottie-player>
-          </div>
-          <div style={styles.textCol}>
-            <h3 style={styles.title}>Analista en Ciencia de Datos, Machine Learning y Big Data</h3>
-            <p style={styles.desc}>
-              Con sólida experiencia en el ciclo completo de análisis y transformación de información. Destacado por desarrollar soluciones escalables que van desde la ingesta, preprocesamiento y visualización de grandes volúmenes de datos (usando Apache Spark), hasta la implementación de modelos predictivos y de segmentación no supervisada (Redes Neuronales, K-Means, Regresiones y Árboles de Decisión). Orientado a optimizar procesos, automatizar la toma de decisiones y generar valor estratégico a partir de los datos.
-            </p>
-            <div className="marquee-container">
-              <div className="marquee-content">
-                <span style={styles.techTag}>Python</span>
-                <span style={styles.techTag}>Apache Spark</span>
-                <span style={styles.techTag}>SparkSQL</span>
-                <span style={styles.techTag}>Scikit-Learn</span>
-                <span style={styles.techTag}>Pandas</span>
-                <span style={styles.techTag}>NumPy</span>
-                <span style={styles.techTag}>PyTorch</span>
-                <span style={styles.techTag}>Python</span>
-                <span style={styles.techTag}>Apache Spark</span>
-                <span style={styles.techTag}>SparkSQL</span>
-                <span style={styles.techTag}>Scikit-Learn</span>
-                <span style={styles.techTag}>Pandas</span>
-                <span style={styles.techTag}>NumPy</span>
-                <span style={styles.techTag}>PyTorch</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        ))}
       </div>
 
       {/* Botón Ver Proyectos con Lazo */}
-      <div className="fade-up-element" style={styles.buttonWrapper}>
-        <div style={styles.lazoLine}></div>
-        <Link to="/trabajos" className="btn btn-glass" style={{ margin: '0 2rem', marginTop: 0 }}>
+      <div ref={buttonWrapRef} style={styles.buttonWrapper}>
+        <div ref={(el) => (lazoRefs.current[0] = el)} style={styles.lazoLine}></div>
+        <Link ref={ctaRef} to="/trabajos" className="btn btn-glass" style={styles.ctaLink}>
           Ver Proyectos
         </Link>
-        <div style={styles.lazoLine}></div>
+        <div ref={(el) => (lazoRefs.current[1] = el)} style={styles.lazoLine}></div>
       </div>
     </section>
   );
 };
 
 const styles = {
+  section: {
+    position: 'relative',
+  },
+  eyebrow: {
+    fontFamily: 'var(--font-mono)',
+    fontSize: '0.95rem',
+    color: 'var(--secondary)',
+    letterSpacing: '1px',
+    marginBottom: '0.75rem',
+  },
+  eyebrowPrompt: {
+    color: 'var(--secondary)',
+  },
+  title: {
+    marginBottom: '3rem',
+  },
   buttonWrapper: {
     display: 'flex',
     alignItems: 'center',
@@ -185,6 +292,13 @@ const styles = {
     flex: 1,
     height: '1px',
     background: 'linear-gradient(90deg, transparent, rgba(94, 234, 212, 0.5), transparent)',
+    transformOrigin: 'center',
+  },
+  ctaLink: {
+    margin: '0 2rem',
+    marginTop: 0,
+    display: 'inline-block',
+    willChange: 'transform',
   },
   servicesWrapper: {
     display: 'flex',
@@ -208,7 +322,33 @@ const styles = {
     flex: '1 1 300px',
     minWidth: '280px',
   },
-  title: {
+  serviceMeta: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.6rem',
+    marginBottom: '0.75rem',
+  },
+  serviceIndex: {
+    fontFamily: 'var(--font-mono)',
+    fontSize: '0.85rem',
+    color: 'var(--text-muted)',
+    letterSpacing: '1px',
+  },
+  statusDot: {
+    width: '7px',
+    height: '7px',
+    borderRadius: '50%',
+    backgroundColor: 'var(--secondary)',
+    boxShadow: '0 0 10px var(--secondary)',
+  },
+  statusLabel: {
+    fontFamily: 'var(--font-mono)',
+    fontSize: '0.75rem',
+    color: 'var(--secondary)',
+    letterSpacing: '1.5px',
+    textTransform: 'uppercase',
+  },
+  serviceTitle: {
     fontSize: '1.8rem',
     color: '#ffffff',
     marginBottom: '1.25rem',
@@ -230,7 +370,7 @@ const styles = {
     fontSize: '0.85rem',
     color: 'var(--secondary)',
     whiteSpace: 'nowrap',
-  }
+  },
 };
 
 export default Services;

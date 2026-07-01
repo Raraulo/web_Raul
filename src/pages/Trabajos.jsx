@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import pdfFile from '../assets/capturas/Maison Des Senteurs.pdf';
 import book1 from '../assets/capturas/book1.png';
 import book2 from '../assets/capturas/book2.png';
@@ -29,6 +31,8 @@ import dog12 from '../assets/capturas/dog1 (12).png';
 import dog13 from '../assets/capturas/dog1 (13).png';
 import go1 from '../assets/capturas/go (1).png';
 import go2 from '../assets/capturas/go (2).png';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const images = [book1, book2, book3, book4, book5, book6, book7, book8];
 const djangoImages = [django1, django2, django3, django4, django5];
@@ -132,6 +136,7 @@ const Eyebrow = ({ children }) => (
 const Trabajos = () => {
   // lightbox = { images, index, title } | null
   const [lightbox, setLightbox] = useState(null);
+  const rootRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -162,10 +167,91 @@ const Trabajos = () => {
 
   const openLightbox = (imgs, index, title) => setLightbox({ images: imgs, index, title });
 
+  /* ----------------------------------------------------------------
+     Scroll choreography — cada bloque (project-card, galería, notebook,
+     sección AWS) entra al hacer scroll en vez de estar todo estático
+     desde el primer render. Usa selectores de clase ya existentes en
+     el DOM, así que no requiere tocar el JSX de abajo con refs sueltas.
+  ------------------------------------------------------------------ */
+  useLayoutEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray('.project-card').forEach((card) => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: card, start: 'top 85%' },
+          }
+        );
+      });
+
+      gsap.utils.toArray('.gallery-grid').forEach((grid) => {
+        const items = grid.querySelectorAll('.gallery-item');
+        gsap.fromTo(
+          items,
+          { opacity: 0, scale: 0.92 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.5,
+            stagger: 0.05,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: grid, start: 'top 88%' },
+          }
+        );
+      });
+
+      gsap.utils.toArray('.notebook-card').forEach((card) => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: card, start: 'top 88%' },
+          }
+        );
+      });
+
+      const aws = rootRef.current?.querySelector('.aws-section');
+      if (aws) {
+        gsap.fromTo(
+          aws,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: aws, start: 'top 85%' },
+          }
+        );
+      }
+    }, rootRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="section container fade-up-element is-visible" style={{ paddingTop: '8rem', minHeight: '100vh' }}>
+    <section
+      ref={rootRef}
+      className="section container fade-up-element is-visible"
+      style={{ paddingTop: '8rem', minHeight: '100vh' }}
+    >
       <style>{galleryStyles}</style>
 
+      <Eyebrow>ls ./proyectos --sort=date</Eyebrow>
       <h2 className="section-title">Portafolio de Proyectos</h2>
       <p style={styles.pageIntro}>
         Una selección de proyectos de extremo a extremo: el problema de negocio, las decisiones técnicas
@@ -421,7 +507,11 @@ const Trabajos = () => {
           )}
 
           <figure className="lightbox-figure" onClick={(e) => e.stopPropagation()}>
-            <img src={lightbox.images[lightbox.index]} alt={`${lightbox.title} — ${lightbox.index + 1}`} />
+            <img
+              key={lightbox.index}
+              src={lightbox.images[lightbox.index]}
+              alt={`${lightbox.title} — ${lightbox.index + 1}`}
+            />
             <figcaption className="lightbox-caption">
               <span>{lightbox.title}</span>
               {lightbox.images.length > 1 && (
@@ -579,6 +669,8 @@ const styles = {
    Estilos para la galería, las tarjetas y el lightbox. Se inyectan
    localmente para no depender de clases globales no definidas en
    este archivo (hover, grids responsivas y animaciones de foco).
+   Se agregaron las animaciones de apertura del lightbox y el
+   cross-fade de imagen al navegar (lightbox-fade-in / lightbox-img-in).
 ------------------------------------------------------------------ */
 const galleryStyles = `
 .project-card {
@@ -735,6 +827,11 @@ const galleryStyles = `
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  animation: lightbox-fade-in 0.25s ease;
+}
+@keyframes lightbox-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 .lightbox-figure {
   margin: 0;
@@ -743,6 +840,11 @@ const galleryStyles = `
   display: flex;
   flex-direction: column;
   align-items: center;
+  animation: lightbox-scale-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes lightbox-scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
 }
 .lightbox-figure img {
   max-width: 100%;
@@ -750,6 +852,11 @@ const galleryStyles = `
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: lightbox-img-in 0.25s ease;
+}
+@keyframes lightbox-img-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
 }
 .lightbox-caption {
   margin-top: 0.85rem;
@@ -810,6 +917,14 @@ const galleryStyles = `
   }
   .lightbox-figure {
     max-width: 80vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-backdrop,
+  .lightbox-figure,
+  .lightbox-figure img {
+    animation: none;
   }
 }
 `;

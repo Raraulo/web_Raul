@@ -1,9 +1,167 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ecIcon from '../assets/ec.png';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Footer = () => {
+  const footerRef = useRef(null);
+  const socialsRef = useRef(null);
+  const coordsTextRef = useRef(null);
+  const coordsDotRef = useRef(null);
+  const logoWrapRef = useRef(null);
+  const logoRef = useRef(null);
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    const ctx = gsap.context(() => {
+      if (prefersReduced) return;
+
+      // ---------- secuencia de entrada, dispara una sola vez al hacer scroll ----------
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: footerRef.current,
+          start: 'top 85%',
+          once: true,
+        },
+        defaults: { ease: 'power3.out' },
+      });
+
+      tl.from(socialsRef.current.children, {
+        x: -28,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.12,
+      })
+        .from(
+          logoWrapRef.current,
+          {
+            scale: 0.6,
+            opacity: 0,
+            rotate: -25,
+            duration: 0.9,
+            ease: 'back.out(1.7)',
+          },
+          '-=0.3'
+        )
+        .from(
+          bottomRef.current,
+          { opacity: 0, y: 12, duration: 0.5 },
+          '-=0.35'
+        );
+
+      // ---------- "GPS lock": las coordenadas se "sintonizan" hasta 0° 0' 0'' ----------
+      // Ecuador = la línea equinoccial → tiene sentido narrativo, no es decoración gratuita.
+      const target = "0° 0' 0''";
+      const digits = '0123456789';
+      const scramble = { p: 0 };
+
+      gsap.fromTo(
+        scramble,
+        { p: 0 },
+        {
+          p: 1,
+          duration: 1.4,
+          delay: 0.35,
+          ease: 'power1.inOut',
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top 85%',
+            once: true,
+          },
+          onUpdate: () => {
+            const revealed = Math.floor(scramble.p * target.length);
+            let out = '';
+            for (let i = 0; i < target.length; i++) {
+              const c = target[i];
+              if (c === ' ' || c === '°' || c === "'") {
+                out += c;
+              } else {
+                out += i < revealed ? c : digits[(Math.random() * 10) | 0];
+              }
+            }
+            if (coordsTextRef.current) coordsTextRef.current.textContent = out;
+          },
+          onComplete: () => {
+            if (coordsTextRef.current)
+              coordsTextRef.current.textContent = target;
+          },
+        }
+      );
+
+      // punto pulsante, ambiental, constante
+      gsap.to(coordsDotRef.current, {
+        scale: 1.6,
+        opacity: 0.35,
+        duration: 1,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+
+      // respiración de brillo en el logo, ambiental
+      gsap.to(logoRef.current, {
+        filter: 'drop-shadow(0 10px 34px rgba(0,255,255,.35))',
+        duration: 2.4,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }, footerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // tilt 3D magnético del logo siguiendo el mouse
+  const handleLogoMove = (e) => {
+    const el = logoRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const relX = (e.clientX - rect.left) / rect.width - 0.5;
+    const relY = (e.clientY - rect.top) / rect.height - 0.5;
+    gsap.to(el, {
+      rotateY: relX * 18,
+      rotateX: -relY * 18,
+      duration: 0.4,
+      ease: 'power2.out',
+      transformPerspective: 600,
+    });
+  };
+
+  const handleLogoLeave = () => {
+    gsap.to(logoRef.current, {
+      rotateX: 0,
+      rotateY: 0,
+      duration: 0.6,
+      ease: 'elastic.out(1, 0.5)',
+    });
+  };
+
+  // micro-rebote del icono en cada link social
+  const handleSocialEnter = (e) => {
+    gsap.to(e.currentTarget.querySelector('.social-icon'), {
+      scale: 1.25,
+      rotate: -8,
+      duration: 0.3,
+      ease: 'back.out(3)',
+    });
+  };
+  const handleSocialLeave = (e) => {
+    gsap.to(e.currentTarget.querySelector('.social-icon'), {
+      scale: 1,
+      rotate: 0,
+      duration: 0.4,
+      ease: 'power2.out',
+    });
+  };
+
   return (
-    <footer style={styles.footer}>
+    <footer ref={footerRef} style={styles.footer}>
       <style>{`
         .coords-line{
           display:flex;
@@ -16,10 +174,12 @@ const Footer = () => {
           height:6px;
           border-radius:50%;
           background:var(--primary);
+          display:inline-block;
         }
 
         .coords-text{
           letter-spacing:.12em;
+          font-variant-numeric: tabular-nums;
         }
 
         .coords-location{
@@ -31,7 +191,7 @@ const Footer = () => {
 
         .social-link{
           color:var(--text-muted);
-          transition:.3s;
+          transition:color .3s, transform .3s;
           display:flex;
           align-items:center;
           gap:.7rem;
@@ -56,17 +216,25 @@ const Footer = () => {
           letter-spacing:.05em;
         }
 
+        .footer-logo-wrap{
+          perspective:600px;
+        }
+
         .footer-logo{
           width:170px;
           height:170px;
           object-fit:contain;
-          transition:.35s;
           filter:drop-shadow(0 6px 20px rgba(0,0,0,.35));
+          will-change: transform, filter;
+          transform-style: preserve-3d;
+          cursor:pointer;
         }
 
-        .footer-logo:hover{
-          transform:scale(1.06);
-          filter:drop-shadow(0 8px 28px rgba(0,255,255,.25));
+        @media (prefers-reduced-motion: reduce){
+          .footer-logo, .coords-dot{
+            transition:none !important;
+            animation:none !important;
+          }
         }
       `}</style>
 
@@ -76,13 +244,15 @@ const Footer = () => {
         <div style={styles.topRow}>
 
           {/* Redes, apiladas una abajo de otra */}
-          <div style={styles.socialsContainer}>
+          <div ref={socialsRef} style={styles.socialsContainer}>
 
             <a
               href="https://www.linkedin.com/in/raúl-amaguaña-3b1222223/"
               target="_blank"
               rel="noreferrer"
               className="social-link"
+              onMouseEnter={handleSocialEnter}
+              onMouseLeave={handleSocialLeave}
             >
               <span className="social-icon">
                 <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
@@ -99,6 +269,8 @@ const Footer = () => {
               target="_blank"
               rel="noreferrer"
               className="social-link"
+              onMouseEnter={handleSocialEnter}
+              onMouseLeave={handleSocialLeave}
             >
               <span className="social-icon">
                 <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
@@ -115,6 +287,8 @@ const Footer = () => {
               target="_blank"
               rel="noreferrer"
               className="social-link"
+              onMouseEnter={handleSocialEnter}
+              onMouseLeave={handleSocialLeave}
             >
               <span className="social-icon">
                 <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
@@ -126,11 +300,11 @@ const Footer = () => {
 
           </div>
 
-          {/* Coordenadas solitas, centradas */}
+          {/* Coordenadas con efecto de "lock" GPS */}
           <div style={styles.coordsContainer}>
             <span className="coords-line">
-              <span className="coords-dot"></span>
-              <span className="coords-text">
+              <span className="coords-dot" ref={coordsDotRef}></span>
+              <span className="coords-text" ref={coordsTextRef}>
                 0° 0' 0''
               </span>
             </span>
@@ -145,24 +319,25 @@ const Footer = () => {
 
         </div>
 
-        {/* Logo principal, sin círculo */}
-
+        {/* Logo principal, con tilt 3D magnético */}
         <div style={styles.logoRow}>
-          <img
-            src={ecIcon}
-            alt="Ecuador"
-            className="footer-logo"
-          />
+          <div ref={logoWrapRef} className="footer-logo-wrap">
+            <img
+              ref={logoRef}
+              src={ecIcon}
+              alt="Ecuador"
+              className="footer-logo"
+              onMouseMove={handleLogoMove}
+              onMouseLeave={handleLogoLeave}
+            />
+          </div>
         </div>
 
         {/* Parte inferior */}
-
-        <div style={styles.bottomRow}>
-
+        <div ref={bottomRef} style={styles.bottomRow}>
           <p style={styles.text}>
             © {new Date().getFullYear()} Raul Amaguaña Jaramillo
           </p>
-
         </div>
 
       </div>
