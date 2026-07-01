@@ -5,7 +5,7 @@ const Header = () => {
     <header style={styles.header} className="glass-panel">
       <div className="container" style={styles.container}>
         <div style={styles.logo}>
-          <span style={styles.highlight}>Raul</span>.dev
+          <img src="/favicon.svg" alt="Logo" style={styles.logoImg} />
         </div>
         <nav style={styles.nav}>
           <a href="#about" style={styles.link}>About</a>
@@ -35,9 +35,13 @@ const styles = {
     alignItems: 'center',
   },
   logo: {
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-    color: 'var(--text-main)',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  logoImg: {
+    width: '2rem',
+    height: '2rem',
+    display: 'block',
   },
   highlight: {
     color: 'var(--primary)',

@@ -66,6 +66,11 @@ const Nav = () => {
         .nav-logo span {
           color: var(--secondary);
         }
+        .nav-logo-img {
+          width: 2.5rem;
+          height: 2.5rem;
+          display: block;
+        }
         .nav-links {
           display: flex;
           gap: 2rem;
@@ -144,8 +149,8 @@ const Nav = () => {
 
       <div className="nav-container">
         <div className="nav-logo">
-          <span>Raul</span>.dev
-        </div>
+            <img src="/favicon.svg" alt="Logo" className="nav-logo-img" />
+          </div>
         
         {/* Desktop Links */}
         <div className="nav-links">
