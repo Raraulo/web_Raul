@@ -41,7 +41,7 @@ const Hero = () => {
 
       const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
-      tl.fromTo(lottieWrapRef.current, { opacity: 0, scale: 0.8 }, { opacity: 0.25, scale: 1, duration: 2.6 }, 0)
+      tl.fromTo(lottieWrapRef.current, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 2.6 }, 0)
         .fromTo(badgeRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9 }, 0.4)
         .fromTo(nameRef.current, { opacity: 0, y: 45 }, { opacity: 1, y: 0, duration: 1.1 }, 0.7)
         .fromTo(titleRef.current, { opacity: 0, y: 35 }, { opacity: 1, y: 0, duration: 1 }, 1.1)
@@ -167,16 +167,109 @@ const Hero = () => {
 
   return (
     <section id="hero" ref={sectionRef} style={styles.section} className="container">
-      <div ref={lottieOuterRef} style={styles.massiveLottieOuter}>
-        <div ref={lottieWrapRef} style={styles.massiveLottieContainer}>
-          <lottie-player
-            src="/lottie/code.json"
-            background="transparent"
-            speed="0.45"
-            style={{ width: '100%', height: '100%' }}
-            loop
-            autoplay
-          ></lottie-player>
+      {/* ==================== BLACK HOLE (reemplaza al lottie-player) ==================== */}
+      <div ref={lottieOuterRef} style={styles.blackHoleOuter}>
+        <div ref={lottieWrapRef} style={styles.blackHoleWrap} className="bh-wrap">
+          {/* resplandor ambiental */}
+          <div className="bh-ambient" />
+
+          <svg
+            className="bh-svg"
+            viewBox="0 0 500 500"
+            style={{ width: '100%', height: '100%', overflow: 'visible', display: 'block' }}
+          >
+            <defs>
+              <radialGradient id="bhCore" cx="45%" cy="42%" r="58%">
+                <stop offset="0%" stopColor="#050301" />
+                <stop offset="80%" stopColor="#000000" />
+                <stop offset="96%" stopColor="#000000" />
+                <stop offset="100%" stopColor="#f5f2b2" />
+              </radialGradient>
+
+              {/* el gradiente rota sobre sí mismo — el anillo no se mueve, la luz sí */}
+              <linearGradient id="bhDisk" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
+                <stop offset="0%" stopColor="#fff3a3" stopOpacity="0.95" />
+                <stop offset="8%" stopColor="#ffd54f" stopOpacity="0.95" />
+                <stop offset="24%" stopColor="#ffbf48" stopOpacity="0.95" />
+                <stop offset="42%" stopColor="#fffaf0" stopOpacity="1" />
+                <stop offset="50%" stopColor="#ffffff" stopOpacity="1" />
+                <stop offset="58%" stopColor="#fffaf0" stopOpacity="1" />
+                <stop offset="76%" stopColor="#ffb464" stopOpacity="0.9" />
+                <stop offset="92%" stopColor="#f3e17f" stopOpacity="0.5" />
+                <stop offset="100%" stopColor="#fff01f" stopOpacity="0" />
+                <animateTransform
+                  attributeName="gradientTransform"
+                  type="rotate"
+                  from="0 0.5 0.5"
+                  to="360 0.5 0.5"
+                  dur="18s"
+                  repeatCount="indefinite"
+                />
+              </linearGradient>
+
+              <radialGradient id="bhHalo" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#ffd9a0" stopOpacity="0.20" />
+                <stop offset="55%" stopColor="#ffd900" stopOpacity="0.06" />
+                <stop offset="100%" stopColor="#ffb469" stopOpacity="0" />
+              </radialGradient>
+
+              <filter id="bhGlow" x="-80%" y="-80%" width="260%" height="260%">
+                <feGaussianBlur stdDeviation="5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+
+              {/* ruido animado + desplazamiento = el borde del anillo "respira" como una nube */}
+              <filter id="bhCloud" x="-60%" y="-60%" width="220%" height="220%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.012 0.028" numOctaves="3" seed="7" result="noise">
+                  <animate
+                    attributeName="baseFrequency"
+                    values="0.012 0.028;0.017 0.035;0.012 0.028"
+                    dur="9s"
+                    repeatCount="indefinite"
+                  />
+                </feTurbulence>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="22" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+                <feGaussianBlur in="displaced" stdDeviation="3.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="displaced" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            {/* halo suave de fondo, fijo */}
+            <circle cx="250" cy="250" r="235" fill="url(#bhHalo)" />
+
+            {/* resplandor amplio detrás del anillo, tipo nube */}
+            <circle
+              cx="250" cy="250" r="150"
+              fill="none" stroke="url(#bhDisk)" strokeWidth="48"
+              filter="url(#bhCloud)"
+              opacity="0.45"
+            />
+
+            {/* anillo único — sigue el contorno del círculo, grueso, con textura de nube en movimiento */}
+            <circle
+              cx="250" cy="250" r="150"
+              fill="none" stroke="url(#bhDisk)" strokeWidth="30"
+              filter="url(#bhCloud)"
+              className="bh-ring"
+            />
+
+            {/* núcleo brillante fino sobre el anillo */}
+            <circle
+              cx="250" cy="250" r="150"
+              fill="none" stroke="url(#bhDisk)" strokeWidth="6"
+              filter="url(#bhCloud)"
+              opacity="0.85"
+            />
+
+            {/* horizonte de sucesos */}
+            <circle cx="250" cy="250" r="104" fill="url(#bhCore)" opacity="0.95" />
+          </svg>
         </div>
       </div>
 
@@ -191,6 +284,41 @@ const Hero = () => {
           color: var(--secondary, #7dd3fc);
         }
         @keyframes blink { 50% { opacity: 0; } }
+
+        .bh-wrap {
+          position: relative;
+        }
+        .bh-svg {
+          opacity: 0.9;
+        }
+        .bh-ambient {
+          position: absolute;
+          inset: -10%;
+          border-radius: 50%;
+          background: radial-gradient(circle at center, rgba(255,180,100,0.10), rgba(255,180,100,0) 60%);
+          filter: blur(20px);
+          animation: bhAmbientPulse 6s ease-in-out infinite;
+          pointer-events: none;
+        }
+        @keyframes bhAmbientPulse {
+          0%, 100% { opacity: 0.6; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.04); }
+        }
+
+        .bh-ring {
+          transform-origin: 250px 250px;
+          animation: bhRingDrift 22s linear infinite;
+        }
+        @keyframes bhRingDrift {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .bh-ambient, .bh-ring {
+            animation: none !important;
+          }
+        }
       `}</style>
 
       <div style={styles.content}>
@@ -233,21 +361,26 @@ const styles = {
     paddingTop: '6rem',
     overflow: 'hidden',
   },
-  massiveLottieOuter: {
+  blackHoleOuter: {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
+    top: '48%',
+    left: 'calc(60% + 4cm)',
     transform: 'translate(-50%, -50%)',
-    width: '140vw',
-    height: '140vw',
-    maxWidth: '1100px',
-    maxHeight: '1100px',
+    width: '58vw',
+    height: '58vw',
+    maxWidth: '640px',
+    maxHeight: '640px',
+    minWidth: '360px',
+    minHeight: '360px',
     zIndex: -1,
     pointerEvents: 'none',
   },
-  massiveLottieContainer: {
+  blackHoleWrap: {
     width: '100%',
     height: '100%',
+    borderRadius: '50%',
+    overflow: 'hidden',
+    opacity: 0.84,
     willChange: 'transform',
   },
   content: {

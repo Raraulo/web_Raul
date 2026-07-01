@@ -5,6 +5,18 @@ import ecIcon from '../assets/ec.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/**
+ * Footer — closes the page the way Hero opens it.
+ *
+ * The Hero begins with a comment-style prefix ("//Raúl Amaguaña"); the
+ * footer closes with the same syntax ("// EOF"), a real end-of-file marker
+ * rather than a decorative flourish. Everything else here (GPS lock on the
+ * equinoctial line, magnetic logo tilt, social bounce) was already solid —
+ * the main gap was that the mouse-driven handlers ran unconditionally,
+ * ignoring prefers-reduced-motion even though the scroll entrance respected
+ * it. That's fixed below.
+ */
+
 const Footer = () => {
   const footerRef = useRef(null);
   const socialsRef = useRef(null);
@@ -13,11 +25,13 @@ const Footer = () => {
   const logoWrapRef = useRef(null);
   const logoRef = useRef(null);
   const bottomRef = useRef(null);
+  const prefersReducedRef = useRef(false);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
+    prefersReducedRef.current = prefersReduced;
 
     const ctx = gsap.context(() => {
       if (prefersReduced) return;
@@ -117,8 +131,9 @@ const Footer = () => {
     return () => ctx.revert();
   }, []);
 
-  // tilt 3D magnético del logo siguiendo el mouse
+  // tilt 3D magnético del logo siguiendo el mouse — ahora respeta reduced-motion
   const handleLogoMove = (e) => {
+    if (prefersReducedRef.current) return;
     const el = logoRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -134,6 +149,7 @@ const Footer = () => {
   };
 
   const handleLogoLeave = () => {
+    if (prefersReducedRef.current) return;
     gsap.to(logoRef.current, {
       rotateX: 0,
       rotateY: 0,
@@ -142,8 +158,9 @@ const Footer = () => {
     });
   };
 
-  // micro-rebote del icono en cada link social
+  // micro-rebote del icono en cada link social — idem, respeta reduced-motion
   const handleSocialEnter = (e) => {
+    if (prefersReducedRef.current) return;
     gsap.to(e.currentTarget.querySelector('.social-icon'), {
       scale: 1.25,
       rotate: -8,
@@ -152,6 +169,7 @@ const Footer = () => {
     });
   };
   const handleSocialLeave = (e) => {
+    if (prefersReducedRef.current) return;
     gsap.to(e.currentTarget.querySelector('.social-icon'), {
       scale: 1,
       rotate: 0,
@@ -228,6 +246,14 @@ const Footer = () => {
           will-change: transform, filter;
           transform-style: preserve-3d;
           cursor:pointer;
+        }
+
+        .footer-eof{
+          color:var(--text-muted);
+          font-family:var(--font-mono);
+          font-size:.8rem;
+          opacity:.5;
+          letter-spacing:.05em;
         }
 
         @media (prefers-reduced-motion: reduce){
@@ -336,8 +362,9 @@ const Footer = () => {
         {/* Parte inferior */}
         <div ref={bottomRef} style={styles.bottomRow}>
           <p style={styles.text}>
-            © {new Date().getFullYear()} Raul Amaguaña Jaramillo
+            © {new Date().getFullYear()} Raúl Amaguaña Jaramillo
           </p>
+          <span className="footer-eof" aria-hidden="true">// EOF</span>
         </div>
 
       </div>
@@ -394,7 +421,7 @@ const styles = {
 
   bottomRow:{
     display:'flex',
-    justifyContent:'flex-start',
+    justifyContent:'space-between',
     alignItems:'center',
     flexWrap:'wrap',
     gap:'1rem'
