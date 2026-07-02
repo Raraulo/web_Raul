@@ -2,6 +2,7 @@ import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from
 import { createPortal } from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import lottie from 'lottie-web';
 import pdfFile from '../assets/capturas/Maison Des Senteurs.pdf';
 import book1 from '../assets/capturas/book1.png';
 import book2 from '../assets/capturas/book2.png';
@@ -31,6 +32,9 @@ import dog12 from '../assets/capturas/dog1 (12).png';
 import dog13 from '../assets/capturas/dog1 (13).png';
 import go1 from '../assets/capturas/go (1).png';
 import go2 from '../assets/capturas/go (2).png';
+import wawScreen from '../assets/capturas/waw.jpg';
+import wawQrAnimation from '../assets/lottie/qr.json';
+import wawQrCode from '../assets/capturas/WaWallet.apk_QR.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -136,7 +140,10 @@ const Eyebrow = ({ children }) => (
 const Trabajos = () => {
   // lightbox = { images, index, title } | null
   const [lightbox, setLightbox] = useState(null);
+  const [qrFullscreen, setQrFullscreen] = useState(false);
   const rootRef = useRef(null);
+  const qrContainerRef = useRef(null);
+  const qrAnimRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -165,7 +172,44 @@ const Trabajos = () => {
     return () => window.removeEventListener('keydown', handler);
   }, [lightbox, closeLightbox, showPrev, showNext]);
 
+  // Cierre del QR en pantalla completa con Escape
+  useEffect(() => {
+    if (!qrFullscreen) return;
+    const handler = (e) => {
+      if (e.key === 'Escape') setQrFullscreen(false);
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [qrFullscreen]);
+
   const openLightbox = (imgs, index, title) => setLightbox({ images: imgs, index, title });
+
+  // Carga la animación del QR directamente con lottie-web sobre el div
+  // contenedor. Se evita el wrapper de 'lottie-react' porque en algunos
+  // entornos de Vite su import por defecto no resuelve al componente.
+  useEffect(() => {
+    if (!qrContainerRef.current) return;
+    qrAnimRef.current = lottie.loadAnimation({
+      container: qrContainerRef.current,
+      renderer: 'svg',
+      loop: true,
+      autoplay: false,
+      animationData: wawQrAnimation,
+    });
+    return () => {
+      qrAnimRef.current?.destroy();
+      qrAnimRef.current = null;
+    };
+  }, []);
+
+  // El QR está pausado por defecto y "cobra vida" al pasar el cursor
+  const handleQrHoverStart = () => {
+    qrAnimRef.current?.setSpeed(1.3);
+    qrAnimRef.current?.play();
+  };
+  const handleQrHoverEnd = () => {
+    qrAnimRef.current?.pause();
+  };
 
   /* ----------------------------------------------------------------
      Scroll choreography — cada bloque (project-card, galería, notebook,
@@ -223,6 +267,21 @@ const Trabajos = () => {
           }
         );
       });
+
+      const wawShowcase = rootRef.current?.querySelector('.waw-showcase');
+      if (wawShowcase) {
+        gsap.fromTo(
+          wawShowcase,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: wawShowcase, start: 'top 88%' },
+          }
+        );
+      }
 
       const aws = rootRef.current?.querySelector('.aws-section');
       if (aws) {
@@ -293,6 +352,49 @@ const Trabajos = () => {
         <a href={pdfFile} download="Maison_Des_Senteurs.pdf" className="btn btn-outline" style={{ marginTop: '1.5rem' }}>
           Descargar PDF
         </a>
+
+        {/* WaWallet App Section */}
+        <div style={styles.subSection}>
+          <Eyebrow>React Native · Firebase · App Nativa</Eyebrow>
+          <h4 style={styles.subtitle}>WaWallet — App de Testeo</h4>
+          <div style={styles.desc}>
+            <p style={{ marginBottom: '1rem' }}>
+              WaWallet es la aplicación financiera satélite que impulsa los pagos dentro de Maison Des Senteurs. Construida con React Native e integrada sobre la infraestructura de seguridad de Firebase, permite generar tarjetas virtuales y realizar compras directas en un solo toque.
+            </p>
+            <p>
+              Pruebalo escaneando el código QR con tu celular, da clic sobre él Qr para descargarlo.
+            </p>
+          </div>
+
+          <div className="waw-showcase">
+            <div className="waw-phone">
+              <div className="waw-phone-notch" />
+              <div className="waw-phone-screen">
+                <img src={wawScreen} alt="Pantalla de la aplicación WaWallet" loading="lazy" />
+              </div>
+            </div>
+
+            <div
+              className="waw-qr-wrap"
+              role="button"
+              tabIndex={0}
+              onClick={() => setQrFullscreen(true)}
+              onMouseEnter={handleQrHoverStart}
+              onMouseLeave={handleQrHoverEnd}
+              onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setQrFullscreen(true)}
+              aria-label="Ver código QR de descarga de WaWallet en pantalla completa"
+            >
+              <div className="waw-android-badge">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                  <path d="M17.523 15.34a1.05 1.05 0 1 1 0-2.1 1.05 1.05 0 0 1 0 2.1Zm-11.046 0a1.05 1.05 0 1 1 0-2.1 1.05 1.05 0 0 1 0 2.1ZM17.86 9.6l1.66-2.877a.375.375 0 0 0-.65-.375L17.17 9.19a10.76 10.76 0 0 0-10.34 0L5.13 6.348a.375.375 0 1 0-.65.375L6.14 9.6C3.6 11.09 1.9 13.68 1.6 16.66h20.8c-.3-2.98-2-5.57-4.54-7.06Z" />
+                </svg>
+                <span>Disponible en Android</span>
+              </div>
+              <div ref={qrContainerRef} className="waw-qr-lottie" />
+              <span className="waw-qr-hint">Toca para ampliar ↗</span>
+            </div>
+          </div>
+        </div>
 
         {/* Django Backend Section */}
         <div style={styles.subSection}>
@@ -528,6 +630,24 @@ const Trabajos = () => {
         </div>,
         document.body
       )}
+
+      {/* QR de WaWallet en pantalla completa */}
+      {qrFullscreen && createPortal(
+        <div className="fullscreen-modal qr-fullscreen-backdrop" onClick={() => setQrFullscreen(false)}>
+          <button
+            className="close-btn lightbox-close"
+            onClick={(e) => { e.stopPropagation(); setQrFullscreen(false); }}
+            aria-label="Cerrar"
+          >
+            ×
+          </button>
+          <figure className="qr-fullscreen-figure" onClick={(e) => e.stopPropagation()}>
+            <img src={wawQrCode} alt="Código QR para descargar WaWallet" />
+            <figcaption>Escanea para descargar WaWallet</figcaption>
+          </figure>
+        </div>,
+        document.body
+      )}
     </section>
   );
 };
@@ -666,11 +786,10 @@ const styles = {
 };
 
 /* ----------------------------------------------------------------
-   Estilos para la galería, las tarjetas y el lightbox. Se inyectan
-   localmente para no depender de clases globales no definidas en
-   este archivo (hover, grids responsivas y animaciones de foco).
-   Se agregaron las animaciones de apertura del lightbox y el
-   cross-fade de imagen al navegar (lightbox-fade-in / lightbox-img-in).
+   Estilos para la galería, las tarjetas, la sección de WaWallet y el
+   lightbox. Se inyectan localmente para no depender de clases
+   globales no definidas en este archivo (hover, grids responsivas y
+   animaciones de foco).
 ------------------------------------------------------------------ */
 const galleryStyles = `
 .project-card {
@@ -808,6 +927,150 @@ const galleryStyles = `
   transform: translateY(-2px);
 }
 
+/* WaWallet showcase */
+.waw-showcase {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+  margin-top: 2rem;
+  padding: 3rem;
+  background: radial-gradient(circle at 30% 20%, rgba(157,139,255,0.10), transparent 60%), rgba(0,0,0,0.25);
+  border-radius: 20px;
+  border: 1px solid rgba(157,139,255,0.15);
+}
+
+.waw-phone {
+  position: relative;
+  width: 220px;
+  height: 440px;
+  background: #0a0a0f;
+  border-radius: 34px;
+  border: 6px solid #1c1c24;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05);
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: transform 0.4s ease;
+}
+.waw-phone:hover {
+  transform: translateY(-4px);
+}
+.waw-phone-notch {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 16px;
+  background: #0a0a0f;
+  border-radius: 10px;
+  z-index: 2;
+}
+.waw-phone-screen {
+  width: 100%;
+  height: 100%;
+}
+.waw-phone-screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.waw-android-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #0e1a12;
+  border: 1px solid rgba(61, 220, 132, 0.4);
+  color: #3ddc84;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  z-index: 1;
+}
+
+.waw-qr-wrap {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(157,139,255,0.2);
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  flex-shrink: 0;
+}
+.waw-qr-wrap:hover,
+.waw-qr-wrap:focus-visible {
+  transform: scale(1.04);
+  border-color: rgba(157,139,255,0.5);
+  box-shadow: 0 20px 50px rgba(157,139,255,0.18);
+}
+.waw-qr-wrap:focus-visible {
+  outline: 2px solid #9d8bff;
+  outline-offset: 3px;
+}
+.waw-qr-lottie {
+  width: 85%;
+  height: 85%;
+}
+.waw-qr-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.55);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+.waw-qr-wrap:hover .waw-qr-hint,
+.waw-qr-wrap:focus-visible .waw-qr-hint {
+  opacity: 1;
+}
+
+.qr-fullscreen-backdrop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: lightbox-fade-in 0.25s ease;
+}
+.qr-fullscreen-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  animation: lightbox-scale-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.qr-fullscreen-figure img {
+  width: min(70vw, 480px);
+  height: auto;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.qr-fullscreen-figure figcaption {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+}
+
 .aws-section {
   margin-top: 5rem;
   display: flex;
@@ -918,13 +1181,31 @@ const galleryStyles = `
   .lightbox-figure {
     max-width: 80vw;
   }
+  .waw-showcase {
+    flex-direction: column;
+    gap: 2.5rem;
+    padding: 2rem 1.5rem;
+  }
+  .waw-phone {
+    width: 180px;
+    height: 360px;
+  }
+  .waw-qr-wrap {
+    width: 220px;
+    height: 220px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .lightbox-backdrop,
   .lightbox-figure,
-  .lightbox-figure img {
+  .lightbox-figure img,
+  .qr-fullscreen-backdrop,
+  .qr-fullscreen-figure {
     animation: none;
+  }
+  .waw-phone:hover {
+    transform: none;
   }
 }
 `;
