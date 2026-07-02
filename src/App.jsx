@@ -4,6 +4,7 @@ import Nav from './components/Nav';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Trabajos from './pages/Trabajos';
+import Iss from './pages/Iss';
 
 function AppContent() {
   const cursorRef = useRef(null);
@@ -95,9 +96,10 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/trabajos" element={<Trabajos />} />
+          <Route path="/iss" element={<Iss />} />
         </Routes>
       </main>
-      <Footer />
+      {location.pathname !== '/iss' && <Footer />}
     </>
   );
 }

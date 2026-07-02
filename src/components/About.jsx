@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import portadaImage from '../assets/imagenporta.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -181,6 +182,13 @@ const About = () => {
         }
 
         .about-layout { display: grid; grid-template-columns: 260px 1fr; gap: 4rem; }
+        .about-avatar-image {
+          object-fit: cover;
+          object-position: center 20%;
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
         @media (max-width: 860px) {
           .about-layout { grid-template-columns: 1fr; gap: 2.5rem; }
         }
@@ -202,7 +210,9 @@ const About = () => {
         <div style={styles.identityCol}>
           <div ref={avatarWrapRef} style={styles.avatarWrap}>
             <div className="about-avatar-ring" style={styles.avatarRing}></div>
-            <div ref={avatarRef} style={styles.avatar}>RA</div>
+            <div ref={avatarRef} style={styles.avatarImageWrap}>
+              <img src={portadaImage} alt="Raúl Amaguaña" style={styles.avatarImage} />
+            </div>
           </div>
 
           <h3 style={styles.role}>System &amp; Full Stack Engineer</h3>
@@ -287,33 +297,34 @@ const styles = {
   },
   avatarWrap: {
     position: 'relative',
-    width: '120px',
-    height: '120px',
+    width: '180px',
+    height: '180px',
     marginBottom: '0.75rem',
     perspective: '600px',
   },
   avatarRing: {
     position: 'absolute',
-    inset: '-6px',
+    inset: '-8px',
     borderRadius: '50%',
     background:
       'conic-gradient(from 0deg, var(--secondary), transparent 30%, transparent 70%, var(--secondary))',
     opacity: 0.6,
   },
-  avatar: {
+  avatarImageWrap: {
     position: 'absolute',
     inset: '0',
     borderRadius: '50%',
-    background: '#ffffff',
-    color: '#000000',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: '2.4rem',
-    fontWeight: '700',
-    fontFamily: 'var(--font-mono)',
+    overflow: 'hidden',
+    border: '1px solid rgba(255,255,255,0.16)',
     transformStyle: 'preserve-3d',
     willChange: 'transform',
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    objectPosition: 'center 20%',
+    display: 'block',
   },
   role: {
     fontSize: '1.6rem',
