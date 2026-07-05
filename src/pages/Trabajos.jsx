@@ -317,6 +317,17 @@ const Trabajos = () => {
         detrás de la solución y el resultado final en producción.
       </p>
 
+      <a
+        href="https://web-news-red.vercel.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="simple-link"
+        style={styles.simpleLink}
+      >
+        <span aria-hidden="true" style={styles.linkIcon}>📝</span>
+        <em>Ver última publicación</em>
+      </a>
+
       {/* PDF Section */}
       <div className="project-card" style={styles.cardSpacing}>
         <Eyebrow>React Native · iOS &amp; Android · Gemini AI</Eyebrow>
@@ -783,6 +794,53 @@ const styles = {
     width: '125%',
     height: '125%',
   },
+  pinnedLinkBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
+    background: 'rgba(157, 139, 255, 0.08)',
+    border: '1px solid rgba(157, 139, 255, 0.16)',
+    borderRadius: '18px',
+    padding: '1.5rem 1.75rem',
+    marginBottom: '2rem',
+  },
+  pinnedLinkText: {
+    margin: 0,
+    color: '#d8d0ff',
+    fontSize: '1rem',
+    lineHeight: 1.6,
+    maxWidth: '720px',
+  },
+  pinnedLinkButton: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.65rem',
+    padding: '0.95rem 1.3rem',
+    borderRadius: '999px',
+    fontWeight: 700,
+    letterSpacing: '0.02em',
+  },
+  pinnedLinkIcon: {
+    display: 'inline-flex',
+    transform: 'translateX(0)',
+    transition: 'transform 0.2s ease',
+  },
+  simpleLink: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    color: '#9d8bff',
+    fontWeight: 600,
+    fontStyle: 'italic',
+    textDecoration: 'none',
+    marginTop: '2.25rem',
+    marginBottom: '2rem',
+  },
+  linkIcon: {
+    display: 'inline-flex',
+    fontSize: '1rem',
+    lineHeight: 1,
+  },
 };
 
 /* ----------------------------------------------------------------
@@ -1041,6 +1099,18 @@ const galleryStyles = `
 .waw-qr-wrap:hover .waw-qr-hint,
 .waw-qr-wrap:focus-visible .waw-qr-hint {
   opacity: 1;
+}
+
+.simple-link {
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.simple-link:hover,
+.simple-link:focus-visible {
+  color: #c8b2ff;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
 }
 
 .qr-fullscreen-backdrop {
