@@ -324,8 +324,14 @@ const Trabajos = () => {
         className="simple-link"
         style={styles.simpleLink}
       >
-        <span aria-hidden="true" style={styles.linkIcon}>📝</span>
-        <em>Ver última publicación</em>
+        <span aria-hidden="true" style={styles.linkIconBox}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.8" />
+            <path d="M8 12H16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            <path d="M12 8L16 12L12 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+        Ver última publicación
       </a>
 
       {/* PDF Section */}
@@ -829,17 +835,32 @@ const styles = {
     display: 'inline-flex',
     alignItems: 'center',
     gap: '0.5rem',
-    color: '#9d8bff',
-    fontWeight: 600,
-    fontStyle: 'italic',
-    textDecoration: 'none',
-    marginTop: '2.25rem',
+    color: 'var(--text-muted)',
+    fontSize: '1.05rem',
+    fontWeight: 500,
+    fontStyle: 'normal',
+    textDecoration: 'underline',
+    textDecorationColor: 'rgba(255,255,255,0.7)',
+    textDecorationThickness: '1.2px',
+    textUnderlineOffset: '3px',
+    marginTop: '2.5rem',
     marginBottom: '2rem',
   },
   linkIcon: {
     display: 'inline-flex',
     fontSize: '1rem',
     lineHeight: 1,
+  },
+  linkIconBox: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '1.85rem',
+    height: '1.85rem',
+    borderRadius: '0.75rem',
+    border: '1px solid rgba(255,255,255,0.35)',
+    background: 'rgba(255,255,255,0.06)',
+    marginRight: '0.75rem',
   },
 };
 
