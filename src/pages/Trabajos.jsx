@@ -472,6 +472,24 @@ const Trabajos = () => {
       <div className="project-card" style={{ ...styles.cardSpacing, marginTop: '4rem' }}>
         <Eyebrow>Angular · RxJS · NgRx</Eyebrow>
         <h3 style={styles.subtitle}>E-Commerce Pawluxury para Mascotas</h3>
+        
+        <a
+          href="https://cliente-angular-s3ov.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="simple-link"
+          style={{ ...styles.simpleLink, marginTop: '0', marginBottom: '1.5rem' }}
+        >
+          <span aria-hidden="true" style={styles.linkIconBox}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.8" />
+              <path d="M8 12H16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              <path d="M12 8L16 12L12 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+          Ver demo
+        </a>
+
         <div style={styles.desc}>
           <p style={{ marginBottom: '1rem' }}>
             <strong>El Problema:</strong> La actividad requería modernizar una plataforma de e-commerce legada que sufría de tiempos de carga de hasta 8 segundos por página, lo que provocaba una alta tasa de rebote (bounce rate) y abandonos frecuentes en el embudo de conversión, especialmente en dispositivos móviles. La gestión del estado del carrito era ineficiente y causaba discrepancias en el inventario durante picos de tráfico.
