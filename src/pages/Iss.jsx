@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { geoOrthographic, geoPath, geoGraticule10, geoDistance } from 'd3-geo';
 import { feature } from 'topojson-client';
-import Footer from '../components/Footer';
+
 
 // npm install gsap d3-geo topojson-client
 
@@ -362,7 +362,7 @@ const Iss = () => {
         </div>
       </div>
 
-      <Footer />
+
     </section>
   );
 };

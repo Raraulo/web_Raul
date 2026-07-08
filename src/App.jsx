@@ -99,7 +99,7 @@ function AppContent() {
           <Route path="/iss" element={<Iss />} />
         </Routes>
       </main>
-      {location.pathname !== '/iss' && <Footer />}
+      <Footer />
     </>
   );
 }

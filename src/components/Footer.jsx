@@ -347,7 +347,11 @@ const Footer = () => {
 
         {/* Logo principal, con tilt 3D magnético */}
         <div style={styles.logoRow}>
-          <div ref={logoWrapRef} className="footer-logo-wrap">
+          <div 
+            ref={logoWrapRef} 
+            className="footer-logo-wrap"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
             <img
               ref={logoRef}
               src={ecIcon}
@@ -377,7 +381,9 @@ const styles = {
   footer:{
     borderTop:'1px solid var(--border)',
     marginTop:'3rem',
-    padding:'4rem 0 2rem'
+    padding:'4rem 0 2rem',
+    background: 'rgba(8, 11, 18, 0.8)',
+    backdropFilter: 'blur(10px)'
   },
 
   container:{

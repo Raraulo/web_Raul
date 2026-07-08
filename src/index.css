@@ -19,7 +19,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  cursor: none;
   max-width: 100vw;
 }
 
@@ -209,7 +208,6 @@ a {
   font-family: var(--font-mono);
   font-size: 0.9rem;
   font-weight: 700;
-  cursor: none;
   transition: all 0.3s ease;
   border: none;
   text-transform: uppercase;
