@@ -35,6 +35,8 @@ import go2 from '../assets/capturas/go (2).png';
 import wawScreen from '../assets/capturas/waw.jpg';
 import wawQrAnimation from '../assets/lottie/qr.json';
 import wawQrCode from '../assets/capturas/WaWallet.apk_QR.png';
+import maisonScreen from '../assets/capturas/maison.jpg';
+import maisonQrCode from '../assets/capturas/Maisondeparfum.apk_QR.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -141,9 +143,12 @@ const Trabajos = () => {
   // lightbox = { images, index, title } | null
   const [lightbox, setLightbox] = useState(null);
   const [qrFullscreen, setQrFullscreen] = useState(false);
+  const [maisonQrFullscreen, setMaisonQrFullscreen] = useState(false);
   const rootRef = useRef(null);
   const qrContainerRef = useRef(null);
   const qrAnimRef = useRef(null);
+  const maisonQrContainerRef = useRef(null);
+  const maisonQrAnimRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -182,6 +187,16 @@ const Trabajos = () => {
     return () => window.removeEventListener('keydown', handler);
   }, [qrFullscreen]);
 
+  // Cierre del QR de Maison APP en pantalla completa con Escape
+  useEffect(() => {
+    if (!maisonQrFullscreen) return;
+    const handler = (e) => {
+      if (e.key === 'Escape') setMaisonQrFullscreen(false);
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [maisonQrFullscreen]);
+
   const openLightbox = (imgs, index, title) => setLightbox({ images: imgs, index, title });
 
   // Carga la animación del QR directamente con lottie-web sobre el div
@@ -209,6 +224,30 @@ const Trabajos = () => {
   };
   const handleQrHoverEnd = () => {
     qrAnimRef.current?.pause();
+  };
+
+  // Misma animación Lottie reutilizada para el QR de Maison APP
+  useEffect(() => {
+    if (!maisonQrContainerRef.current) return;
+    maisonQrAnimRef.current = lottie.loadAnimation({
+      container: maisonQrContainerRef.current,
+      renderer: 'svg',
+      loop: true,
+      autoplay: false,
+      animationData: wawQrAnimation,
+    });
+    return () => {
+      maisonQrAnimRef.current?.destroy();
+      maisonQrAnimRef.current = null;
+    };
+  }, []);
+
+  const handleMaisonQrHoverStart = () => {
+    maisonQrAnimRef.current?.setSpeed(1.3);
+    maisonQrAnimRef.current?.play();
+  };
+  const handleMaisonQrHoverEnd = () => {
+    maisonQrAnimRef.current?.pause();
   };
 
   /* ----------------------------------------------------------------
@@ -331,7 +370,7 @@ const Trabajos = () => {
             <path d="M12 8L16 12L12 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
-        Ver última publicación
+        Ver Next.js News Web con apis
       </a>
 
       {/* PDF Section */}
@@ -384,7 +423,7 @@ const Trabajos = () => {
           </div>
 
           <div className="waw-showcase">
-            <div className="waw-phone">
+            <div className="waw-phone waw-phone--iphone">
               <div className="waw-phone-notch" />
               <div className="waw-phone-screen">
                 <img src={wawScreen} alt="Pantalla de la aplicación WaWallet" loading="lazy" />
@@ -413,10 +452,69 @@ const Trabajos = () => {
           </div>
         </div>
 
+        {/* Maison APP Section */}
+        <div style={styles.subSection}>
+          <Eyebrow>React Native · Django · Consume WaWallet</Eyebrow>
+          <h4 style={styles.subtitle}>Maison APP — App de Perfumes</h4>
+          <div style={styles.desc}>
+            <p style={{ marginBottom: '1rem' }}>
+              Maison APP es la aplicación de perfumería construida con React Native, con un backend propio en Django, que consume la API de WaWallet para procesar los pagos dentro de la experiencia de compra.
+            </p>
+            <p>
+              Pruébala escaneando el código QR con tu celular, da clic sobre él para descargarlo.
+            </p>
+          </div>
+
+          <div className="waw-showcase">
+            <div
+              className="waw-qr-wrap"
+              role="button"
+              tabIndex={0}
+              onClick={() => setMaisonQrFullscreen(true)}
+              onMouseEnter={handleMaisonQrHoverStart}
+              onMouseLeave={handleMaisonQrHoverEnd}
+              onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setMaisonQrFullscreen(true)}
+              aria-label="Ver código QR de descarga de Maison APP en pantalla completa"
+            >
+              <div className="waw-android-badge">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                  <path d="M17.523 15.34a1.05 1.05 0 1 1 0-2.1 1.05 1.05 0 0 1 0 2.1Zm-11.046 0a1.05 1.05 0 1 1 0-2.1 1.05 1.05 0 0 1 0 2.1ZM17.86 9.6l1.66-2.877a.375.375 0 0 0-.65-.375L17.17 9.19a10.76 10.76 0 0 0-10.34 0L5.13 6.348a.375.375 0 1 0-.65.375L6.14 9.6C3.6 11.09 1.9 13.68 1.6 16.66h20.8c-.3-2.98-2-5.57-4.54-7.06Z" />
+                </svg>
+                <span>Disponible en Android</span>
+              </div>
+              <div ref={maisonQrContainerRef} className="waw-qr-lottie" />
+              <span className="waw-qr-hint">Toca para ampliar ↗</span>
+            </div>
+
+            <div className="waw-phone waw-phone--galaxy">
+              <div className="waw-phone-camera" />
+              <div className="waw-phone-screen">
+                <img src={maisonScreen} alt="Pantalla de la aplicación Maison APP" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Django Backend Section */}
         <div style={styles.subSection}>
           <Eyebrow>Python · Django REST Framework · PostgreSQL</Eyebrow>
           <h4 style={styles.subtitle}>Backend en Django</h4>
+          <a
+            href="https://appmovilback-1.onrender.com/admin/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="simple-link"
+            style={{ ...styles.simpleLink, marginTop: '0', marginBottom: '1.5rem' }}
+          >
+            <span aria-hidden="true" style={styles.linkIconBox}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M8 12H16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                <path d="M12 8L16 12L12 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            Ver demo version 07.26
+          </a>
           <div style={styles.desc}>
             <p style={{ marginBottom: '1rem' }}>
               <strong>El Problema:</strong> La aplicación móvil de perfumería requería de un sistema central que gestionara el inventario, los usuarios y los pedidos de forma segura y unificada. Era crítico que este sistema pudiera orquestar lógica de negocio compleja, como jerarquías de fragancias y precios dinámicos, de manera altamente eficiente.
@@ -487,7 +585,7 @@ const Trabajos = () => {
               <path d="M12 8L16 12L12 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
-          Ver demo
+          Ver demo version 07.26
         </a>
 
         <div style={styles.desc}>
@@ -679,6 +777,24 @@ const Trabajos = () => {
           <figure className="qr-fullscreen-figure" onClick={(e) => e.stopPropagation()}>
             <img src={wawQrCode} alt="Código QR para descargar WaWallet" />
             <figcaption>Escanea para descargar WaWallet</figcaption>
+          </figure>
+        </div>,
+        document.body
+      )}
+
+      {/* QR de Maison APP en pantalla completa */}
+      {maisonQrFullscreen && createPortal(
+        <div className="fullscreen-modal qr-fullscreen-backdrop" onClick={() => setMaisonQrFullscreen(false)}>
+          <button
+            className="close-btn lightbox-close"
+            onClick={(e) => { e.stopPropagation(); setMaisonQrFullscreen(false); }}
+            aria-label="Cerrar"
+          >
+            ×
+          </button>
+          <figure className="qr-fullscreen-figure" onClick={(e) => e.stopPropagation()}>
+            <img src={maisonQrCode} alt="Código QR para descargar Maison APP" />
+            <figcaption>Escanea para descargar Maison APP</figcaption>
           </figure>
         </div>,
         document.body
@@ -1061,6 +1177,22 @@ const galleryStyles = `
   height: 16px;
   background: #0a0a0f;
   border-radius: 10px;
+  z-index: 2;
+}
+.waw-phone--galaxy {
+  border-radius: 26px;
+  border-color: #15151c;
+}
+.waw-phone-camera {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #0a0a0f;
+  border: 2px solid #1c1c24;
   z-index: 2;
 }
 .waw-phone-screen {
