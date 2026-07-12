@@ -24,7 +24,7 @@ const SERVICES = [
     index: '01',
     status: 'ACTIVO',
     title: 'Ingeniería Móvil Multiplataforma',
-    desc: 'Diseño y desarrollo aplicaciones móviles nativas y multiplataforma con React Native y Flutter, desde la arquitectura inicial hasta lista para su despliegue. Implemento integración con APIs REST/GraphQL, bases de datos locales y en tiempo real (SQLite, Firebase, Supabase), notificaciones push (FCM, APNs), además de testing de usabilidad con buenas prácticas UI/UX y rendimiento para garantizar fiabilidad en todos los dispositivos.',
+    desc: 'Diseño y desarrollo de aplicaciones móviles nativas y multiplataforma con React Native y Flutter, desde la arquitectura inicial hasta lista para su despliegue. Implemento integración con APIs REST/GraphQL, bases de datos locales y en tiempo real (SQLite, Firebase, Supabase), notificaciones push (FCM, APNs), además de testing de usabilidad con buenas prácticas UI/UX y rendimiento para garantizar fiabilidad en todos los dispositivos.',
     techs: ['React Native', 'Expo', 'Flutter', 'Firebase', 'Supabase', 'Fastlane', 'JWT', 'SQLite'],
     lottieSrc: '/lottie/mobile.json',
     lottieHeight: 'min(600px, 80vh)',
@@ -35,7 +35,7 @@ const SERVICES = [
     index: '02',
     status: 'ACTIVO',
     title: 'Desarrollo Web & Dashboards',
-    desc: 'Construyo plataformas web empresariales completas, desde landing pages altamente optimizadas para SEO y conversión hasta dashboards de control en tiempo real con visualizaciones avanzadas (D3.js, Chart.js). Diseño arquitecturas escalables (monolitos modularizados o microservicios) con Node.js/Express, Go o Python (FastAPI), usando bases de datos relacionales (PostgreSQL, SQL Server) y no relacionales (MongoDB, Redis). Implemento autenticación y autorización segura, validación de datos, cacheo, y despliegue en cloud (Vercel, AWS, Railway).',
+    desc: 'Diseño y desarrollo de plataformas web empresariales completas, desde landing pages altamente optimizadas para SEO y conversión hasta dashboards de control en tiempo real con visualizaciones avanzadas (D3.js, Chart.js). Diseño arquitecturas escalables (monolitos modularizados o microservicios) con Node.js/Express, Go o Python (FastAPI), usando bases de datos relacionales (PostgreSQL, SQL Server) y no relacionales (MongoDB, Redis). Implemento autenticación y autorización segura, validación de datos, cacheo, y despliegue en cloud (Vercel, AWS, Railway).',
     techs: ['React/Next.js', 'Angular', 'Node.js/Express', 'Go', 'PostgreSQL', 'MongoDB', 'Redis', 'Chart.js'],
     lottieSrc: '/lottie/web.json',
     lottieHeight: 'min(350px, 60vh)',
@@ -45,7 +45,7 @@ const SERVICES = [
     index: '03',
     status: 'ACTIVO',
     title: 'QA, Seguridad & Despliegue',
-    desc: 'Garantizo la calidad y seguridad de tus sistemas con procesos rigurosos de QA: diseño de casos de prueba funcionales y de regresión, pruebas manuales exploratorias, y automatización básica. Además, validación de inputs, sanitización de datos, y protección contra ataques comunes. Configuro pipelines CI/CD para automatizar builds, tests y despliegues en entornos de staging y producción, con control de versiones (Git) y gestión de cambios.',
+    desc: ' Pruebas para asegurar la calidad y seguridad de sistemas con procesos rigurosos de QA: diseño de casos de prueba funcionales y de regresión, pruebas manuales exploratorias, y automatización básica. Además, validación de inputs, sanitización de datos, y protección contra ataques comunes. Configuro pipelines CI/CD para automatizar builds, tests y despliegues en entornos de staging y producción, con control de versiones (Git) y gestión de cambios.',
     techs: ['Pruebas Manuales', 'Casos de Prueba', 'TestRail', 'Jira', 'OWASP', 'CI/CD', 'Git'],
     lottieSrc: '/lottie/hacker.json',
     lottieHeight: 'min(350px, 60vh)',
@@ -55,7 +55,7 @@ const SERVICES = [
     index: '04',
     status: 'ACTIVO',
     title: 'Analista en Ciencia de Datos, Machine Learning y Big Data',
-    desc: 'Sólida experiencia en el ciclo completo de análisis y transformación de información. Desarrollo soluciones escalables que van desde la ingesta, preprocesamiento y visualización de grandes volúmenes de datos (usando Apache Spark), hasta la implementación de modelos predictivos y de segmentación no supervisada (Redes Neuronales, K-Means, Regresiones y Árboles de Decisión). Orientado a optimizar procesos, automatizar la toma de decisiones y generar valor estratégico a partir de los datos.',
+    desc: 'Experiencia en el ciclo completo de análisis y transformación de información. Desarrollo soluciones escalables que van desde la ingesta, preprocesamiento y visualización de grandes volúmenes de datos (usando Apache Spark), hasta la implementación de modelos predictivos y de segmentación no supervisada (Redes Neuronales, K-Means, Regresiones y Árboles de Decisión). Orientado a optimizar procesos, automatizar la toma de decisiones y generar valor estratégico a partir de los datos.',
     techs: ['Python', 'Apache Spark', 'SparkSQL', 'Scikit-Learn', 'Pandas', 'NumPy', 'PyTorch'],
     lottieSrc: '/lottie/datos.json',
     lottieHeight: 'min(400px, 70vh)',
@@ -154,7 +154,7 @@ const Services = () => {
 
       // ---- Magnetic CTA ------------------------------------------------
       const cta = ctaRef.current;
-      let cleanupCta = () => {};
+      let cleanupCta = () => { };
       if (cta) {
         const magnetX = gsap.quickTo(cta, 'x', { duration: 0.4, ease: 'power3' });
         const magnetY = gsap.quickTo(cta, 'y', { duration: 0.4, ease: 'power3' });
