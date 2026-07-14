@@ -142,13 +142,48 @@ const Services = () => {
       );
       gsap.fromTo(
         ctaRef.current,
-        { opacity: 0, y: 16 },
+        { opacity: 0, y: 30, scale: 0.8, boxShadow: '0 0 0 rgba(94, 234, 212, 0)' },
         {
           opacity: 1,
           y: 0,
-          duration: 0.6,
+          scale: 1.1,
+          boxShadow: '0 0 40px rgba(94, 234, 212, 0.8)',
+          duration: 0.8,
+          ease: 'back.out(1.7)',
+          scrollTrigger: { trigger: buttonWrapRef.current, start: 'top 85%' },
+          onComplete: () => {
+            gsap.to(ctaRef.current, {
+              scale: 1.05,
+              boxShadow: '0 0 25px rgba(94, 234, 212, 0.5)',
+              duration: 1,
+              repeat: -1,
+              yoyo: true,
+              ease: 'sine.inOut'
+            });
+          }
+        }
+      );
+
+      gsap.fromTo(
+        '.cta-arrow',
+        { opacity: 0, x: (i) => (i === 0 ? -40 : 40) },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          delay: 0.3,
           ease: 'power3.out',
-          scrollTrigger: { trigger: buttonWrapRef.current, start: 'top 90%' },
+          scrollTrigger: { trigger: buttonWrapRef.current, start: 'top 85%' },
+          onComplete: () => {
+            gsap.to('.cta-arrow', {
+              x: (i) => (i === 0 ? 15 : -15),
+              scale: 1.1,
+              duration: 0.8,
+              repeat: -1,
+              yoyo: true,
+              ease: 'power1.inOut'
+            });
+          }
         }
       );
 
@@ -252,12 +287,18 @@ const Services = () => {
         ))}
       </div>
 
-      {/* Botón Ver Proyectos con Lazo */}
+      {/* Botón Ver Proyectos con Lazo y Flechas */}
       <div ref={buttonWrapRef} style={styles.buttonWrapper}>
         <div ref={(el) => (lazoRefs.current[0] = el)} style={styles.lazoLine}></div>
-        <Link ref={ctaRef} to="/trabajos" className="btn btn-glass" style={styles.ctaLink}>
+        <div className="cta-arrow" style={styles.arrowContainer}>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </div>
+        <Link ref={ctaRef} to="/trabajos" style={styles.ctaLink}>
           Ver Proyectos
         </Link>
+        <div className="cta-arrow" style={styles.arrowContainer}>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </div>
         <div ref={(el) => (lazoRefs.current[1] = el)} style={styles.lazoLine}></div>
       </div>
     </section>
@@ -297,8 +338,28 @@ const styles = {
   ctaLink: {
     margin: '0 2rem',
     marginTop: 0,
-    display: 'inline-block',
-    willChange: 'transform',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    willChange: 'transform, box-shadow',
+    borderRadius: '16px',
+    padding: '1.5rem 3rem',
+    fontSize: '1.4rem',
+    fontFamily: 'var(--font-mono)',
+    fontWeight: '800',
+    background: 'var(--secondary)',
+    color: '#000',
+    textTransform: 'uppercase',
+    letterSpacing: '2px',
+    border: 'none',
+    cursor: 'pointer',
+  },
+  arrowContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'var(--secondary)',
+    filter: 'drop-shadow(0 0 8px rgba(94, 234, 212, 0.6))',
   },
   servicesWrapper: {
     display: 'flex',
