@@ -399,6 +399,22 @@ const Trabajos = () => {
             </span>
             Ver Next.js News Web con apis
           </a>
+          <a
+            href="http://buildmaster.howto.rocks/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="simple-link"
+            style={styles.simpleLink}
+          >
+            <span aria-hidden="true" style={styles.linkIconBox}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M8 12H16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                <path d="M12 8L16 12L12 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            Ver Laravel Buildmaster con PHP
+          </a>
         </div>
 
         {githubLangs.length > 0 && (
