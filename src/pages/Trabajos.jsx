@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import lottie from 'lottie-web';
-import pdfFile from '../assets/capturas/Maison Des Senteurs.pdf';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import book1 from '../assets/capturas/book1.png';
 import book2 from '../assets/capturas/book2.png';
 import book3 from '../assets/capturas/book3.png';
@@ -144,6 +144,32 @@ const Trabajos = () => {
   const [lightbox, setLightbox] = useState(null);
   const [qrFullscreen, setQrFullscreen] = useState(false);
   const [maisonQrFullscreen, setMaisonQrFullscreen] = useState(false);
+  const [githubLangs, setGithubLangs] = useState([]);
+
+  useEffect(() => {
+    async function fetchGitHubData() {
+      try {
+        const res = await fetch('https://api.github.com/users/Raraulo/repos');
+        const repos = await res.json();
+        const langCounts = {};
+        repos.forEach(repo => {
+          if (repo.language) {
+            langCounts[repo.language] = (langCounts[repo.language] || 0) + 1;
+          }
+        });
+        const data = Object.keys(langCounts)
+          .map(key => ({ name: key, value: langCounts[key] }))
+          .sort((a, b) => b.value - a.value);
+        setGithubLangs(data);
+      } catch (error) {
+        console.error("Error fetching GitHub repos:", error);
+      }
+    }
+    fetchGitHubData();
+  }, []);
+
+  const PIE_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28CFE', '#FF6B6B', '#FF7F50', '#8A2BE2'];
+
   const rootRef = useRef(null);
   const qrContainerRef = useRef(null);
   const qrAnimRef = useRef(null);
@@ -349,29 +375,75 @@ const Trabajos = () => {
     >
       <style>{galleryStyles}</style>
 
-      <Eyebrow>ls ./proyectos --sort=date</Eyebrow>
-      <h2 className="section-title">Portafolio de Proyectos</h2>
-      <p style={styles.pageIntro}>
-        Una selección de proyectos de extremo a extremo: el problema de negocio, las decisiones técnicas
-        detrás de la solución y el resultado final en producción.
-      </p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '2rem', marginBottom: '2rem', marginTop: '-1rem' }}>
+        <div style={{ flex: '1 1 380px' }}>
+          <Eyebrow>ls ./proyectos --sort=date</Eyebrow>
+          <h2 className="section-title">Portafolio de Proyectos</h2>
+          <p style={styles.pageIntro}>
+            Una selección de proyectos de extremo a extremo: el problema de negocio, las decisiones técnicas
+            detrás de la solución y el resultado final en producción.
+          </p>
+          <a
+            href="https://web-news-red.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="simple-link"
+            style={styles.simpleLink}
+          >
+            <span aria-hidden="true" style={styles.linkIconBox}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M8 12H16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                <path d="M12 8L16 12L12 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            Ver Next.js News Web con apis
+          </a>
+        </div>
 
-      <a
-        href="https://web-news-red.vercel.app/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="simple-link"
-        style={styles.simpleLink}
-      >
-        <span aria-hidden="true" style={styles.linkIconBox}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.8" />
-            <path d="M8 12H16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            <path d="M12 8L16 12L12 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </span>
-        Ver Next.js News Web con apis
-      </a>
+        {githubLangs.length > 0 && (
+          <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: '1rem', marginLeft: '-1.5rem' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.7rem', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.5rem', fontWeight: 600 }}>Tecnologías Usadas</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+              <div style={{ width: 220, height: 220 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={githubLangs}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={90}
+                      paddingAngle={4}
+                      dataKey="value"
+                      animationDuration={1400}
+                      stroke="none"
+                    >
+                      {githubLangs.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{ backgroundColor: 'rgba(15,15,25,0.95)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', fontSize: '0.82rem', padding: '6px 12px' }}
+                      itemStyle={{ color: '#fff' }}
+                      formatter={(value, name) => [`${value} repo${value > 1 ? 's' : ''}`, name]}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                {githubLangs.map((entry, index) => (
+                  <div key={entry.name} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: PIE_COLORS[index % PIE_COLORS.length], flexShrink: 0, boxShadow: `0 0 6px ${PIE_COLORS[index % PIE_COLORS.length]}88` }} />
+                    <span style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.78rem', fontWeight: 500 }}>{entry.name}</span>
+                    <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.72rem' }}>{entry.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* PDF Section */}
       <div className="project-card" style={styles.cardSpacing}>
@@ -395,19 +467,7 @@ const Trabajos = () => {
           </p>
         </div>
 
-        <div style={styles.pdfContainer}>
-          <iframe
-            src={pdfFile}
-            width="100%"
-            height="500px"
-            style={{ border: 'none', borderRadius: '8px' }}
-            title="Vista previa del PDF"
-          ></iframe>
-        </div>
 
-        <a href={pdfFile} download="Maison_Des_Senteurs.pdf" className="btn btn-outline" style={{ marginTop: '1.5rem' }}>
-          Descargar PDF
-        </a>
 
         {/* WaWallet App Section */}
         <div style={styles.subSection}>
@@ -565,6 +625,8 @@ const Trabajos = () => {
           onOpen={(i) => openLightbox(images, i, 'E-Commerce Don Books - Dashboard Grails')}
         />
       </div>
+
+
 
       {/* E-Commerce Dog Section */}
       <div className="project-card" style={{ ...styles.cardSpacing, marginTop: '4rem' }}>

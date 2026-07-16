@@ -1,0 +1,22 @@
+.parallax-star-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: transparent;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.parallax-star-layer {
+  position: absolute;
+  /* Shift slightly top and left so that the random generated stars starting at 0,0 cover the screen,
+     and we account for the parallax translation moving them up or left */
+  top: -500px;
+  left: -500px;
+  background: transparent;
+  /* Will-change helps with smooth transform animations */
+  will-change: transform;
+}
