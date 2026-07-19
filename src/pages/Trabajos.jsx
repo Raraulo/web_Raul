@@ -529,11 +529,18 @@ const Trabajos = () => {
         </div>
       </div>
 
+      {/* Elegant Project Divider */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '6rem 0 4rem', width: '100%' }}>
+        <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.15))' }} />
+        <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', whiteSpace: 'nowrap', fontWeight: 600 }}>Aplicaciones Móviles</span>
+        <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to left, transparent, rgba(255,255,255,0.15))' }} />
+      </div>
+
       {/* Mobile Apps Section */}
-      <div style={{ marginTop: '6rem', marginBottom: '8rem', width: '100%' }}>
+      <div style={{ marginBottom: '8rem', width: '100%', textAlign: 'center' }}>
         <Eyebrow>React Native · iOS &amp; Android · Gemini AI</Eyebrow>
         <h3 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-1px' }}>Maison Des Senteurs</h3>
-        <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6, marginBottom: '4rem', maxWidth: '800px' }}>
+        <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6, marginBottom: '4rem', maxWidth: '800px', margin: '0 auto 4rem' }}>
           <p style={{ marginBottom: '1rem' }}>
             <strong>El Problema:</strong> Se requería desarrollar una aplicación móvil de comercio electrónico premium, con una experiencia de navegación fluida a 60fps, sin incurrir en los altos costos de desarrollar en lenguajes nativos por separado para iOS y Android.
           </p>
@@ -643,8 +650,15 @@ const Trabajos = () => {
 
       </div>
 
+      {/* Elegant Project Divider */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '2rem 0 5rem', width: '100%' }}>
+        <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.15))' }} />
+        <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', whiteSpace: 'nowrap', fontWeight: 600 }}>Backend</span>
+        <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to left, transparent, rgba(255,255,255,0.15))' }} />
+      </div>
+
       {/* Backend en Django (Image Below Text) */}
-      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '8rem', marginTop: '4rem', width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '8rem', marginTop: '2rem', width: '100%' }}>
         <div style={{ maxWidth: '900px', marginBottom: '2rem' }}>
           <h3 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-1px' }}>Backend Django</h3>
           <a href="https://appmovilback-1.onrender.com/admin/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', color: 'var(--secondary, #7dd3fc)', marginBottom: '1.5rem', textDecoration: 'none', fontWeight: 500, fontSize: '1.1rem' }}>
@@ -671,8 +685,15 @@ const Trabajos = () => {
         </div>
       </div>
 
+      {/* Elegant Project Divider */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '2rem 0 5rem', width: '100%' }}>
+        <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.15))' }} />
+        <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', whiteSpace: 'nowrap', fontWeight: 600 }}>Dashboard</span>
+        <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to left, transparent, rgba(255,255,255,0.15))' }} />
+      </div>
+
       {/* Dashboard Don Books (Image Below Text) */}
-      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '8rem', marginTop: '4rem', width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '8rem', marginTop: '2rem', width: '100%' }}>
         <div style={{ maxWidth: '900px', marginBottom: '2rem' }}>
           <h3 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-1px' }}>Dashboard Don Books</h3>
           <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6 }}>
@@ -696,10 +717,15 @@ const Trabajos = () => {
         </div>
       </div>
 
-
+      {/* Elegant Project Divider */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '2rem 0 5rem', width: '100%' }}>
+        <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.15))' }} />
+        <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', whiteSpace: 'nowrap', fontWeight: 600 }}>E-Commerce</span>
+        <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to left, transparent, rgba(255,255,255,0.15))' }} />
+      </div>
 
       {/* E-Commerce Pawluxury (Image Below Text) */}
-      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '8rem', marginTop: '4rem', width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '8rem', marginTop: '2rem', width: '100%' }}>
         <div style={{ maxWidth: '900px', marginBottom: '2rem' }}>
           <h3 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-1px' }}>E-Commerce Pawluxury</h3>
           <a href="https://cliente-angular-s3ov.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', color: 'var(--secondary, #7dd3fc)', marginBottom: '1.5rem', textDecoration: 'none', fontWeight: 500, fontSize: '1.1rem' }}>
@@ -726,16 +752,16 @@ const Trabajos = () => {
         </div>
       </div>
 
-      {/* Go Backend Section (Top Image) */}
-      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '8rem', marginTop: '4rem', width: '100%' }}>
-        <div 
-          style={{ position: 'relative', width: '100%', height: '500px', cursor: 'pointer', overflow: 'hidden', borderRadius: '12px' }}
-          onClick={() => openLightbox(goImages, 0, 'Servidor Alta Concurrencia')}
-        >
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #050301 0%, transparent 50%)', zIndex: 2, pointerEvents: 'none' }}></div>
-          <SlideshowImage images={goImages} />
-        </div>
-        <div style={{ marginTop: '2rem', maxWidth: '900px' }}>
+      {/* Elegant Project Divider */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '2rem 0 5rem', width: '100%' }}>
+        <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.15))' }} />
+        <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', whiteSpace: 'nowrap', fontWeight: 600 }}>Servidor Go</span>
+        <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to left, transparent, rgba(255,255,255,0.15))' }} />
+      </div>
+
+      {/* Go Backend Section (Image Below Text) */}
+      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '8rem', marginTop: '2rem', width: '100%' }}>
+        <div style={{ maxWidth: '900px', marginBottom: '2rem' }}>
           <h3 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-1px' }}>Servidor Alta Concurrencia</h3>
           <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6 }}>
             <p style={{ marginBottom: '1rem' }}>
@@ -748,6 +774,13 @@ const Trabajos = () => {
               <strong>Tecnologías Clave:</strong> Go, Goroutines, JWT, Seguridad API.
             </p>
           </div>
+        </div>
+        <div
+          style={{ position: 'relative', width: '100%', height: '500px', cursor: 'pointer', overflow: 'hidden', borderRadius: '12px' }}
+          onClick={() => openLightbox(goImages, 0, 'Servidor Alta Concurrencia')}
+        >
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #050301 0%, transparent 50%)', zIndex: 2, pointerEvents: 'none' }}></div>
+          <SlideshowImage images={goImages} />
         </div>
       </div>
 
