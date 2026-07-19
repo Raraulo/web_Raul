@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import cvFile from '../datos/RaulAmaguañaJaramillo_CV.pdf';
 
 const TEXTS = [
   'Raúl Amaguaña',
@@ -23,6 +24,7 @@ const Hero = () => {
   const lineRef = useRef(null);
   const actionsRef = useRef(null);
   const ctaRef = useRef(null);
+  const cvRef = useRef(null);
 
   const [displayText, setDisplayText] = useState('');
   const currentIndex = useRef(0);
@@ -61,28 +63,30 @@ const Hero = () => {
 
       window.addEventListener('pointermove', handlePointerMove);
 
-      // Magnetic CTA
-      const cta = ctaRef.current;
-      let cleanupCta = () => {};
-      if (cta) {
-        const magnetX = gsap.quickTo(cta, 'x', { duration: 0.5, ease: 'power2.out' });
-        const magnetY = gsap.quickTo(cta, 'y', { duration: 0.5, ease: 'power2.out' });
+      // Magnetic CTAs
+      const applyMagnetic = (element) => {
+        if (!element) return () => {};
+        const magnetX = gsap.quickTo(element, 'x', { duration: 0.5, ease: 'power2.out' });
+        const magnetY = gsap.quickTo(element, 'y', { duration: 0.5, ease: 'power2.out' });
 
         const handleMove = (e) => {
-          const rect = cta.getBoundingClientRect();
+          const rect = element.getBoundingClientRect();
           magnetX((e.clientX - (rect.left + rect.width / 2)) * 0.3);
           magnetY((e.clientY - (rect.top + rect.height / 2)) * 0.3);
         };
         const handleLeave = () => { magnetX(0); magnetY(0); };
 
-        cta.addEventListener('mousemove', handleMove);
-        cta.addEventListener('mouseleave', handleLeave);
+        element.addEventListener('mousemove', handleMove);
+        element.addEventListener('mouseleave', handleLeave);
 
-        cleanupCta = () => {
-          cta.removeEventListener('mousemove', handleMove);
-          cta.removeEventListener('mouseleave', handleLeave);
+        return () => {
+          element.removeEventListener('mousemove', handleMove);
+          element.removeEventListener('mouseleave', handleLeave);
         };
-      }
+      };
+
+      const cleanupCta = applyMagnetic(ctaRef.current);
+      const cleanupCv = applyMagnetic(cvRef.current);
 
       gsap.to(badgeRef.current.querySelector('.pulse-dot'), {
         scale: 1.4,
@@ -96,6 +100,7 @@ const Hero = () => {
       return () => {
         window.removeEventListener('pointermove', handlePointerMove);
         cleanupCta();
+        cleanupCv();
       };
     }, sectionRef);
 
@@ -344,6 +349,9 @@ const Hero = () => {
         <div ref={actionsRef} style={styles.actions}>
           <a ref={ctaRef} href="#contact" className="btn btn-primary" style={styles.cta}>
             Iniciar Proyecto
+          </a>
+          <a ref={cvRef} href={cvFile} download="RaulAmaguañaJaramillo_CV.pdf" className="btn btn-primary" style={styles.cta}>
+            Descargar CV
           </a>
         </div>
       </div>

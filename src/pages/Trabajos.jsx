@@ -30,6 +30,10 @@ import dog10 from '../assets/capturas/dog1 (10).png';
 import dog11 from '../assets/capturas/dog1 (11).png';
 import dog12 from '../assets/capturas/dog1 (12).png';
 import dog13 from '../assets/capturas/dog1 (13).png';
+import wawPhoneImg from '../assets/capturas/waw.jpg';
+import wawPhoneImg2 from '../assets/capturas/waw1.jpg';
+import maisonPhoneImg from '../assets/capturas/maison.jpg';
+import maisonPhoneImg2 from '../assets/capturas/maison1.jpg';
 import go1 from '../assets/capturas/go (1).png';
 import go2 from '../assets/capturas/go (2).png';
 import wawScreen from '../assets/capturas/waw.jpg';
@@ -37,6 +41,8 @@ import wawQrAnimation from '../assets/lottie/qr.json';
 import wawQrCode from '../assets/capturas/WaWallet.apk_QR.png';
 import maisonScreen from '../assets/capturas/maison.jpg';
 import maisonQrCode from '../assets/capturas/Maisondeparfum.apk_QR.png';
+import newsImg from '../assets/capturas/news.png';
+import laraImg from '../assets/capturas/lara.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -138,6 +144,43 @@ const Eyebrow = ({ children }) => (
     {children}
   </div>
 );
+
+const SlideshowImage = ({ images }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (!images || images.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [images]);
+
+  if (!images || images.length === 0) return null;
+
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', borderRadius: '8px', zIndex: 1 }}>
+      {images.map((src, index) => (
+        <img
+          key={index}
+          src={src}
+          alt={`Slide ${index}`}
+          loading="lazy"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            opacity: index === currentIndex ? 0.85 : 0,
+            transition: 'opacity 1s ease-in-out'
+          }}
+        />
+      ))}
+    </div>
+  );
+};
 
 const Trabajos = () => {
   // lightbox = { images, index, title } | null
@@ -381,42 +424,7 @@ const Trabajos = () => {
           <h2 className="section-title">Portafolio de Proyectos</h2>
           <p style={styles.pageIntro}>
             Una selección de proyectos de extremo a extremo: el problema de negocio, las decisiones técnicas
-            detrás de la solución y el resultado final en producción.
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.75rem' }}>
-            <a
-              href="https://web-news-red.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="simple-link"
-              style={styles.simpleLink}
-            >
-              <span aria-hidden="true" style={styles.linkIconBox}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.8" />
-                  <path d="M8 12H16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                  <path d="M12 8L16 12L12 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-              Ver Next.js News Web con apis
-            </a>
-            <a
-              href="http://buildmaster.howto.rocks/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="simple-link"
-              style={styles.simpleLink}
-            >
-              <span aria-hidden="true" style={styles.linkIconBox}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.8" />
-                  <path d="M8 12H16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                  <path d="M12 8L16 12L12 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-              Ver Laravel Buildmaster con PHP
-            </a>
-          </div>
         </div>
 
         {githubLangs.length > 0 && (
@@ -463,25 +471,74 @@ const Trabajos = () => {
         )}
       </div>
 
-      {/* PDF Section */}
-      <div className="project-card" style={styles.cardSpacing}>
+      {/* The Quito Grid (Right Image) */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8rem', marginTop: '4rem', position: 'relative', width: '100%', minHeight: '400px' }}>
+        <div style={{ flex: '1 1 50%', maxWidth: '50%', zIndex: 2, paddingRight: '2rem' }}>
+          <h3 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-1px' }}>The Quito Grid</h3>
+          <a href="https://web-news-red.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', color: 'var(--secondary, #7dd3fc)', marginBottom: '1.5rem', textDecoration: 'none', fontWeight: 500, fontSize: '1.1rem' }}>
+            Ver página ↗
+          </a>
+          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6, marginBottom: '2rem' }}>
+            <p style={{ marginBottom: '1rem' }}>
+              <strong>El Problema:</strong> Se necesitaba una plataforma capaz de centralizar información en tiempo real de diversas fuentes sin comprometer el rendimiento ni la experiencia de usuario.
+            </p>
+            <p style={{ marginBottom: '1rem' }}>
+              <strong>La Solución:</strong> Implementé Next.js aprovechando Server-Side Rendering (SSR). Se integraron múltiples APIs de noticias globales, eventos de arte y de música. Todo con una arquitectura limpia y alojado en Vercel.
+            </p>
+            <p>
+              <strong>Tecnologías Clave:</strong> Next.js, React, TailwindCSS, Vercel, RESTful APIs.
+            </p>
+          </div>
+        </div>
+        
+        <div style={{ width: '50%', zIndex: 1 }}></div>
+
+        <div style={{ position: 'absolute', right: 0, top: 0, height: '100%', width: '60%', zIndex: 1, pointerEvents: 'none' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #050301 0%, rgba(5,3,1,0.95) 25%, transparent 100%)', zIndex: 2 }}></div>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #050301 0%, transparent 10%, transparent 90%, #050301 100%)', zIndex: 2 }}></div>
+          <img src={newsImg} alt="The Quito Grid" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85, borderRadius: '8px' }} />
+        </div>
+      </div>
+
+      {/* Laravel Buildmaster (Left Image) */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8rem', marginTop: '4rem', position: 'relative', width: '100%', minHeight: '400px' }}>
+        <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', width: '60%', zIndex: 1, pointerEvents: 'none' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to left, #050301 0%, rgba(5,3,1,0.95) 25%, transparent 100%)', zIndex: 2 }}></div>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #050301 0%, transparent 10%, transparent 90%, #050301 100%)', zIndex: 2 }}></div>
+          <img src={laraImg} alt="Laravel Buildmaster" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85, borderRadius: '8px' }} />
+        </div>
+
+        <div style={{ width: '50%', zIndex: 1 }}></div>
+
+        <div style={{ flex: '1 1 50%', maxWidth: '50%', zIndex: 2, paddingLeft: '2rem' }}>
+          <h3 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-1px' }}>Buildmaster</h3>
+          <a href="http://buildmaster.howto.rocks/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', color: 'var(--secondary, #7dd3fc)', marginBottom: '1.5rem', textDecoration: 'none', fontWeight: 500, fontSize: '1.1rem' }}>
+            Ver página ↗
+          </a>
+          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6, marginBottom: '2rem' }}>
+            <p style={{ marginBottom: '1rem' }}>
+              <strong>Gestión de Construcción:</strong> Un ERP a medida construido con Laravel y MySQL, enfocado en el sector de la construcción.
+            </p>
+            <p style={{ marginBottom: '1rem' }}>
+              <strong>Características:</strong> Gestión integral de personas y recursos humanos, control exhaustivo de inventario y materiales, y monitorización en tiempo real del avance de obra.
+            </p>
+            <p>
+              <strong>Tecnologías Clave:</strong> Laravel, PHP, MySQL, TailwindCSS.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Apps Section */}
+      <div style={{ marginTop: '6rem', marginBottom: '8rem', width: '100%' }}>
         <Eyebrow>React Native · iOS &amp; Android · Gemini AI</Eyebrow>
-        <h3 style={styles.subtitle}>Maison Des Senteurs</h3>
-        <div style={styles.desc}>
+        <h3 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-1px' }}>Maison Des Senteurs</h3>
+        <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6, marginBottom: '4rem', maxWidth: '800px' }}>
           <p style={{ marginBottom: '1rem' }}>
-            <strong>El Problema:</strong> Se requería desarrollar una aplicación móvil de comercio electrónico desde cero para una marca de perfumes de lujo. El reto principal era lograr que la experiencia de navegación en dispositivos móviles igualara o superara la calidad de las aplicaciones nativas en términos de fluidez, transiciones y rendimiento gráfico, sin incurrir en los altos costos y tiempos de desarrollar dos aplicaciones separadas (iOS y Android).
+            <strong>El Problema:</strong> Se requería desarrollar una aplicación móvil de comercio electrónico premium, con una experiencia de navegación fluida a 60fps, sin incurrir en los altos costos de desarrollar en lenguajes nativos por separado para iOS y Android.
           </p>
           <p style={{ marginBottom: '1rem' }}>
-            <strong>La Actividad Requerida:</strong> Diseñar y construir una aplicación multiplataforma con un diseño UX/UI inmersivo, garantizar transiciones a 60fps constantes, implementar un catálogo de alta gama y asegurar un proceso de compra intuitivo e integrado con un backend externo.
-          </p>
-          <p style={{ marginBottom: '1rem' }}>
-            <strong>Desafíos Técnicos:</strong> El mayor desafío técnico fue optimizar la gestión del estado global (carrito de compras, sesión de usuario, favoritos) y la carga asíncrona de imágenes en alta resolución sin saturar la memoria del dispositivo (evitando excepciones <em>Out of Memory</em>). Además, se debía sincronizar perfectamente la interfaz fluida con las respuestas del backend sin bloquear el hilo principal (Main Thread).
-          </p>
-          <p style={{ marginBottom: '1rem' }}>
-            <strong>La Solución (React Native):</strong> La aplicación fue desarrollada utilizando React Native, lo que permitió un solo código base para iOS y Android. Se optimizó el renderizado utilizando componentes funcionales avanzados y <code>FlatList</code> para manejar catálogos extensos sin afectar el rendimiento. La gestión del estado se centralizó eficientemente, y se implementó un sistema de caché de imágenes local. Finalmente, la integración mediante peticiones asíncronas seguras con el servidor garantizó tiempos de carga mínimos, proporcionando una experiencia verdaderamente premium a los usuarios finales.
-          </p>
-          <p>
-            <strong>El Factor Diferenciador:</strong> La plataforma se distingue por integrar "Giulia", un asistente inteligente potenciado por la <strong>API de Inteligencia Artificial Gemini</strong>, capaz de comprender el lenguaje natural y las exigencias de los usuarios para recomendar perfumes altamente personalizados. Además, el flujo de pago se integra con <strong>Wawallet</strong>, una aplicación financiera satélite ultrarrápida (creada con Firebase y la infraestructura de seguridad de Google), que permite la generación de tarjetas virtuales y compras directas en un solo clic dentro de la app principal.
+            <strong>La Solución:</strong> Se desarrolló en React Native con un solo código base. Se integró un asistente inteligente ("Giulia") potenciado por la API de Gemini para recomendar perfumes de forma hiper-personalizada, y un flujo de pago ultrarrápido con tarjetas virtuales integradas.
           </p>
         </div>
 
@@ -498,34 +555,38 @@ const Trabajos = () => {
             <p>
               Pruebalo escaneando el código QR con tu celular, da clic sobre él Qr para descargarlo.
             </p>
-          </div>
-
-          <div className="waw-showcase">
-            <div className="waw-phone waw-phone--iphone">
-              <div className="waw-phone-notch" />
-              <div className="waw-phone-screen">
-                <img src={wawScreen} alt="Pantalla de la aplicación WaWallet" loading="lazy" />
+            <div className="waw-showcase" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+              {/* First phone (iPhone) */}
+              <div className="waw-phone waw-phone--iphone" style={{ width: '200px', height: '400px', position: 'relative' }}>
+                <div className="waw-phone-notch" />
+                <div className="waw-phone-screen">
+                  <img src={wawScreen} alt="Pantalla de la aplicación WaWallet" loading="lazy" />
+                </div>
               </div>
-            </div>
 
-            <div
-              className="waw-qr-wrap"
-              role="button"
-              tabIndex={0}
-              onClick={() => setQrFullscreen(true)}
-              onMouseEnter={handleQrHoverStart}
-              onMouseLeave={handleQrHoverEnd}
-              onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setQrFullscreen(true)}
-              aria-label="Ver código QR de descarga de WaWallet en pantalla completa"
-            >
-              <div className="waw-android-badge">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-                  <path d="M17.523 15.34a1.05 1.05 0 1 1 0-2.1 1.05 1.05 0 0 1 0 2.1Zm-11.046 0a1.05 1.05 0 1 1 0-2.1 1.05 1.05 0 0 1 0 2.1ZM17.86 9.6l1.66-2.877a.375.375 0 0 0-.65-.375L17.17 9.19a10.76 10.76 0 0 0-10.34 0L5.13 6.348a.375.375 0 1 0-.65.375L6.14 9.6C3.6 11.09 1.9 13.68 1.6 16.66h20.8c-.3-2.98-2-5.57-4.54-7.06Z" />
-                </svg>
-                <span>Disponible en Android</span>
+              {/* Second phone (Android style) using alternate image */}
+              <div className="waw-phone waw-phone--android" style={{ backgroundImage: `url(${wawPhoneImg2})`, backgroundSize: 'cover', width: '200px', height: '400px', position: 'relative' }} />
+
+              {/* QR code area remains unchanged */}
+              <div
+                className="waw-qr-wrap"
+                role="button"
+                tabIndex={0}
+                onClick={() => setQrFullscreen(true)}
+                onMouseEnter={handleQrHoverStart}
+                onMouseLeave={handleQrHoverEnd}
+                onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setQrFullscreen(true)}
+                aria-label="Ver código QR de descarga de WaWallet en pantalla completa"
+              >
+                <div className="waw-android-badge">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                    <path d="M17.523 15.34a1.05 1.05 0 1 1 0-2.1 1.05 0 0 1 0 2.1Zm-11.046 0a1.05 1.05 0 1 1 0-2.1 1.05 0 0 1 0 2.1ZM17.86 9.6l1.66-2.877a.375.375 0 0 0-.65-.375L17.17 9.19a10.76 10.76 0 0 0-10.34 0L5.13 6.348a.375.375 0 1 0-.65.375L6.14 9.6C3.6 11.09 1.9 13.68 1.6 16.66h20.8c-.3-2.98-2-5.57-4.54-7.06Z" />
+                  </svg>
+                  <span>Disponible en Android</span>
+                </div>
+                <div ref={qrContainerRef} className="waw-qr-lottie" />
+                <span className="waw-qr-hint">Toca para ampliar ↗</span>
               </div>
-              <div ref={qrContainerRef} className="waw-qr-lottie" />
-              <span className="waw-qr-hint">Toca para ampliar ↗</span>
             </div>
           </div>
         </div>
@@ -564,157 +625,129 @@ const Trabajos = () => {
               <span className="waw-qr-hint">Toca para ampliar ↗</span>
             </div>
 
-            <div className="waw-phone waw-phone--galaxy">
-              <div className="waw-phone-camera" />
+            <div className="waw-phone waw-phone--iphone" style={{ width: '200px', height: '400px', position: 'relative' }}>
+              <div className="waw-phone-notch" />
               <div className="waw-phone-screen">
                 <img src={maisonScreen} alt="Pantalla de la aplicación Maison APP" loading="lazy" />
+              </div>
+            </div>
+            {/* Second phone for Maison using alternate image */}
+            <div className="waw-phone waw-phone--iphone" style={{ width: '200px', height: '400px', position: 'relative' }}>
+              <div className="waw-phone-notch" />
+              <div className="waw-phone-screen">
+                <img src={maisonPhoneImg2} alt="Pantalla alternativa de Maison APP" loading="lazy" />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Django Backend Section */}
-        <div style={styles.subSection}>
-          <Eyebrow>Python · Django REST Framework · PostgreSQL</Eyebrow>
-          <h4 style={styles.subtitle}>Backend en Django</h4>
-          <a
-            href="https://appmovilback-1.onrender.com/admin/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="simple-link"
-            style={{ ...styles.simpleLink, marginTop: '0', marginBottom: '1.5rem' }}
-          >
-            <span aria-hidden="true" style={styles.linkIconBox}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.8" />
-                <path d="M8 12H16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                <path d="M12 8L16 12L12 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
-            Ver demo version 07.26
+      </div>
+
+      {/* Backend en Django (Image Below Text) */}
+      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '8rem', marginTop: '4rem', width: '100%' }}>
+        <div style={{ maxWidth: '900px', marginBottom: '2rem' }}>
+          <h3 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-1px' }}>Backend Django</h3>
+          <a href="https://appmovilback-1.onrender.com/admin/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', color: 'var(--secondary, #7dd3fc)', marginBottom: '1.5rem', textDecoration: 'none', fontWeight: 500, fontSize: '1.1rem' }}>
+            Ver página ↗
           </a>
-          <div style={styles.desc}>
+          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6 }}>
             <p style={{ marginBottom: '1rem' }}>
-              <strong>El Problema:</strong> La aplicación móvil de perfumería requería de un sistema central que gestionara el inventario, los usuarios y los pedidos de forma segura y unificada. Era crítico que este sistema pudiera orquestar lógica de negocio compleja, como jerarquías de fragancias y precios dinámicos, de manera altamente eficiente.
+              <strong>El Problema:</strong> Se requería un sistema central que gestionara el inventario, usuarios y pedidos de forma segura y orquestara lógica de negocio compleja (jerarquías de fragancias y precios dinámicos).
             </p>
             <p style={{ marginBottom: '1rem' }}>
-              <strong>La Actividad Requerida:</strong> Arquitecturar e implementar un backend escalable y una API REST robusta. Además, se necesitaba proveer de un panel de administración completo (dashboard operativo) para que el personal gestionara el inventario y analizara las ventas en tiempo real.
-            </p>
-            <p style={{ marginBottom: '1rem' }}>
-              <strong>Desafíos Técnicos:</strong> Modelar una base de datos relacional fuertemente normalizada para evitar inconsistencias en el inventario. Implementar mecanismos de seguridad estrictos para la API (ya que manejaría datos transaccionales), optimizar consultas complejas para evitar el problema de N+1 queries, y asegurar que el panel de administración pudiera manejar grandes volúmenes de datos sin latencia.
+              <strong>La Solución:</strong> Se diseñó un esquema relacional complejo en PostgreSQL. Se expusieron endpoints optimizados (minimizando queries con <code>select_related</code>) y protegidos mediante JWT.
             </p>
             <p>
-              <strong>La Solución (Django &amp; DRF):</strong> Se eligió Python con Django y Django REST Framework (DRF) por su capacidad de desarrollo estructurado y seguridad integrada. Se diseñó un esquema relacional complejo en PostgreSQL. Se expusieron endpoints optimizados (minimizando queries a base de datos mediante <code>select_related</code> y <code>prefetch_related</code>) y se protegieron implementando autenticación JWT y políticas CORS restrictivas. El panel de administración fue personalizado exhaustivamente, proporcionando herramientas analíticas potentes y una gestión segura.
+              <strong>Tecnologías Clave:</strong> Python, Django REST Framework, PostgreSQL.
             </p>
           </div>
-          <Gallery
-            images={djangoImages}
-            title="Backend Django"
-            onOpen={(i) => openLightbox(djangoImages, i, 'Backend en Django')}
-          />
         </div>
-      </div>
-
-      {/* Carousel Section */}
-      <div className="project-card" style={{ ...styles.cardSpacing, marginTop: '4rem' }}>
-        <Eyebrow>Grails · Spring Boot · Groovy</Eyebrow>
-        <h3 style={styles.subtitle}>E-Commerce Don Books - Dashboard Grails</h3>
-        <div style={styles.desc}>
-          <p style={{ marginBottom: '1rem' }}>
-            <strong>El Problema:</strong> Existía la necesidad de consolidar múltiples flujos de ventas, inventario y métricas de rendimiento en una única plataforma empresarial unificada (ERP), dado que el sistema previo estaba fragmentado y generaba silos de información que impedían la toma de decisiones informada.
-          </p>
-          <p style={{ marginBottom: '1rem' }}>
-            <strong>La Actividad Requerida:</strong> Desarrollar un panel de control analítico integral y una plataforma de gestión (Dashboard) en tiempo real, capaz de procesar de manera segura y eficiente grandes volúmenes de transacciones financieras y catalogación masiva de productos.
-          </p>
-          <p style={{ marginBottom: '1rem' }}>
-            <strong>Desafíos Técnicos:</strong> Mantener una alta cohesión y bajo acoplamiento en una base de código empresarial. Otro gran reto fue integrar librerías de visualización para procesar millones de registros de datos y renderizar gráficos interactivos en el frontend sin colapsar el navegador, asegurando a la vez la total integridad transaccional (ACID) en la base de datos subyacente.
-          </p>
-          <p style={{ marginBottom: '1rem' }}>
-            <strong>La Solución (Grails &amp; Spring Boot):</strong> Se construyó el sistema basándose en el framework Grails, aprovechando la potencia del ecosistema Spring Boot y el lenguaje Groovy. Se estructuró bajo un patrón estricto MVC. El procesamiento intensivo de datos analíticos se delegó a servicios transaccionales en el backend, los cuales pre-calculaban las métricas antes de ser enviadas a la interfaz. En el frontend, se integraron eficientemente librerías de generación de gráficos, logrando un dashboard fluido, escalable y que provee Inteligencia de Negocios (BI) instantánea.
-          </p>
-          <p>
-            <strong>El Factor Diferenciador:</strong> A diferencia de las plataformas ERP tradicionales, que suelen ser áridas y complejas, este sistema destaca por incorporar galerías fotográficas de alta resolución para el catálogo de libros y la construcción de paneles (dashboards) <strong>altamente didácticos e intuitivos</strong>. Esto democratiza los datos, permitiendo que cualquier usuario operativo pueda interpretar métricas comerciales complejas mediante elementos visuales muy amigables.
-          </p>
-        </div>
-
-        <Gallery
-          images={images}
-          title="Dashboard Don Books"
-          onOpen={(i) => openLightbox(images, i, 'E-Commerce Don Books - Dashboard Grails')}
-        />
-      </div>
-
-
-
-      {/* E-Commerce Dog Section */}
-      <div className="project-card" style={{ ...styles.cardSpacing, marginTop: '4rem' }}>
-        <Eyebrow>Angular · RxJS · NgRx</Eyebrow>
-        <h3 style={styles.subtitle}>E-Commerce Pawluxury para Mascotas</h3>
-        
-        <a
-          href="https://cliente-angular-s3ov.vercel.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="simple-link"
-          style={{ ...styles.simpleLink, marginTop: '0', marginBottom: '1.5rem' }}
+        <div 
+          style={{ position: 'relative', width: '100%', height: '500px', cursor: 'pointer', overflow: 'hidden', borderRadius: '12px' }}
+          onClick={() => openLightbox(djangoImages, 0, 'Backend Django')}
         >
-          <span aria-hidden="true" style={styles.linkIconBox}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.8" />
-              <path d="M8 12H16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-              <path d="M12 8L16 12L12 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
-          Ver demo version 07.26
-        </a>
-
-        <div style={styles.desc}>
-          <p style={{ marginBottom: '1rem' }}>
-            <strong>El Problema:</strong> La actividad requería modernizar una plataforma de e-commerce legada que sufría de tiempos de carga de hasta 8 segundos por página, lo que provocaba una alta tasa de rebote (bounce rate) y abandonos frecuentes en el embudo de conversión, especialmente en dispositivos móviles. La gestión del estado del carrito era ineficiente y causaba discrepancias en el inventario durante picos de tráfico.
-          </p>
-          <p style={{ marginBottom: '1rem' }}>
-            <strong>La Actividad Requerida:</strong> Diseñar y desarrollar desde cero una Single Page Application (SPA) "premium" orientada al sector pet-care, con el objetivo de reducir el tiempo de First Contentful Paint (FCP) a menos de 1.5 segundos, implementar una experiencia de usuario (UX) fluida y sin recargas, y construir un proceso de checkout robusto, a prueba de fallos y de fricción nula.
-          </p>
-          <p style={{ marginBottom: '1rem' }}>
-            <strong>Desafíos Técnicos:</strong> El principal desafío radicaba en manejar el estado complejo de la aplicación (catálogo extenso, filtros dinámicos múltiples, carrito de compras en tiempo real y perfiles de usuario) sin degradar el rendimiento del navegador o consumir memoria excesiva. Además, se requería una sincronización perfecta con el backend en Go para evitar problemas de concurrencia y carrera de datos (race conditions) al momento del pago.
-          </p>
-          <p style={{ marginBottom: '1rem' }}>
-            <strong>La Solución (Implementación con Angular):</strong> Se optó por el framework Angular debido a su arquitectura fuertemente tipada (TypeScript) y su robusto ecosistema empresarial. La interfaz fue construida siguiendo metodologías de diseño atómico, creando componentes UI reutilizables y aislados. Se implementaron estrategias avanzadas de optimización de rendimiento: <em>Lazy Loading</em> de módulos a nivel de ruta para minimizar el tamaño del bundle inicial, <em>Change Detection Strategy OnPush</em> para evitar renderizados innecesarios del árbol DOM, y programación reactiva pura utilizando <strong>RxJS</strong>. Los observables de RxJS permitieron orquestar flujos asíncronos complejos, combinando peticiones HTTP, eventos de usuario y la actualización del estado global (NgRx) de forma declarativa y elegante. El resultado final fue una reducción del 85% en los tiempos de carga de la plataforma y un incremento sustancial en la métrica de conversión de ventas.
-          </p>
-          <p>
-            <strong>El Factor Diferenciador:</strong> El verdadero valor agregado de esta plataforma radicó en una dirección de arte audaz y disruptiva. Se implementó una estética extremadamente colorida, lúdica y vibrante, llevando los principios de diseño <strong>Ultra UI/UX</strong> al límite. La integración armónica de colores intensos, tipografías divertidas y microinteracciones fluidas logró capturar la esencia alegre del mundo de las mascotas, maximizando la retención emocional del usuario de una manera que las tiendas tradicionales rara vez consiguen.
-          </p>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #050301 0%, transparent 50%)', zIndex: 2, pointerEvents: 'none' }}></div>
+          <SlideshowImage images={djangoImages} />
         </div>
+      </div>
 
-        <Gallery
-          images={dogImages}
-          title="Pawluxury"
-          onOpen={(i) => openLightbox(dogImages, i, 'E-Commerce Pawluxury para Mascotas')}
-        />
-
-        {/* Go Backend Section */}
-        <div style={styles.subSection}>
-          <Eyebrow>Go · Goroutines · JWT</Eyebrow>
-          <h4 style={styles.subtitle}>Servidor de Alta Concurrencia en Go</h4>
-          <div style={styles.desc}>
+      {/* Dashboard Don Books (Image Below Text) */}
+      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '8rem', marginTop: '4rem', width: '100%' }}>
+        <div style={{ maxWidth: '900px', marginBottom: '2rem' }}>
+          <h3 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-1px' }}>Dashboard Don Books</h3>
+          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6 }}>
             <p style={{ marginBottom: '1rem' }}>
-              <strong>El Problema:</strong> El crecimiento proyectado de la plataforma e-commerce de mascotas anticipaba picos masivos de tráfico y miles de solicitudes concurrentes por segundo, un escenario donde las arquitecturas tradicionales de un solo hilo experimentaban cuellos de botella y caídas de servicio.
+              <strong>El Problema:</strong> Consolidar múltiples flujos de ventas, inventario y métricas en un ERP unificado para evitar silos de información.
             </p>
             <p style={{ marginBottom: '1rem' }}>
-              <strong>La Actividad Requerida:</strong> Construir desde cero un microservicio backend orientado a soportar una altísima demanda y escalabilidad horizontal nativa, priorizando el resguardo absoluto de los datos transaccionales mediante protocolos de máxima ciberseguridad.
-            </p>
-            <p style={{ marginBottom: '1rem' }}>
-              <strong>Desafíos Técnicos:</strong> Lograr concurrencia máxima con un uso mínimo de memoria (low memory footprint) para optimizar costos de infraestructura en la nube. Implementar manualmente estrategias defensivas rigurosas (prevención de inyección SQL, XSS, CSRF) y proteger la API contra ataques de fuerza bruta, todo sin añadir latencia a las respuestas.
+              <strong>La Solución:</strong> Se construyó el sistema basándose en el framework Grails (Spring Boot y Groovy). Se logró un dashboard fluido y altamente interactivo para procesar millones de registros sin colapsar el navegador.
             </p>
             <p>
-              <strong>La Solución (Go / Golang):</strong> Se desarrolló un servicio de alto rendimiento nativo en Go, utilizando <em>Goroutines</em> para el procesamiento asíncrono y ultra-concurrente de peticiones, logrando tiempos de respuesta en el orden de pocos milisegundos. La capa de seguridad implementó cifrado completo de tráfico (HTTPS/TLS), autenticación stateless estricta mediante JWT con tiempos de expiración cortos, rotación automática de tokens y configuración estricta de políticas CORS. Esto resultó en un servidor ultra-resiliente, a prueba de fallos y capaz de escalar instantáneamente frente a la carga comercial masiva.
+              <strong>Tecnologías Clave:</strong> Grails, Spring Boot, Groovy, MVC.
             </p>
           </div>
-          <Gallery
-            images={goImages}
-            title="Servidor Go"
-            onOpen={(i) => openLightbox(goImages, i, 'Servidor de Alta Concurrencia en Go')}
-          />
+        </div>
+        <div 
+          style={{ position: 'relative', width: '100%', height: '500px', cursor: 'pointer', overflow: 'hidden', borderRadius: '12px' }}
+          onClick={() => openLightbox(images, 0, 'Dashboard Don Books')}
+        >
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #050301 0%, transparent 50%)', zIndex: 2, pointerEvents: 'none' }}></div>
+          <SlideshowImage images={images} />
+        </div>
+      </div>
+
+
+
+      {/* E-Commerce Pawluxury (Image Below Text) */}
+      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '8rem', marginTop: '4rem', width: '100%' }}>
+        <div style={{ maxWidth: '900px', marginBottom: '2rem' }}>
+          <h3 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-1px' }}>E-Commerce Pawluxury</h3>
+          <a href="https://cliente-angular-s3ov.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', color: 'var(--secondary, #7dd3fc)', marginBottom: '1.5rem', textDecoration: 'none', fontWeight: 500, fontSize: '1.1rem' }}>
+            Ver página ↗
+          </a>
+          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6 }}>
+            <p style={{ marginBottom: '1rem' }}>
+              <strong>El Problema:</strong> Modernizar una plataforma legada con altos tiempos de carga, que causaba fricción en dispositivos móviles y abandono de carritos.
+            </p>
+            <p style={{ marginBottom: '1rem' }}>
+              <strong>La Solución:</strong> Se desarrolló una SPA premium utilizando Angular, manejando el estado global de forma reactiva con RxJS y NgRx. Se lograron tiempos de carga ultrarrápidos y un checkout sin fricciones, complementado con una estética Ultra UI vibrante.
+            </p>
+            <p>
+              <strong>Tecnologías Clave:</strong> Angular, RxJS, NgRx, TypeScript.
+            </p>
+          </div>
+        </div>
+        <div 
+          style={{ position: 'relative', width: '100%', height: '500px', cursor: 'pointer', overflow: 'hidden', borderRadius: '12px' }}
+          onClick={() => openLightbox(dogImages, 0, 'E-Commerce Pawluxury')}
+        >
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #050301 0%, transparent 50%)', zIndex: 2, pointerEvents: 'none' }}></div>
+          <SlideshowImage images={dogImages} />
+        </div>
+      </div>
+
+      {/* Go Backend Section (Top Image) */}
+      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '8rem', marginTop: '4rem', width: '100%' }}>
+        <div 
+          style={{ position: 'relative', width: '100%', height: '500px', cursor: 'pointer', overflow: 'hidden', borderRadius: '12px' }}
+          onClick={() => openLightbox(goImages, 0, 'Servidor Alta Concurrencia')}
+        >
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #050301 0%, transparent 50%)', zIndex: 2, pointerEvents: 'none' }}></div>
+          <SlideshowImage images={goImages} />
+        </div>
+        <div style={{ marginTop: '2rem', maxWidth: '900px' }}>
+          <h3 style={{ fontSize: '3rem', marginBottom: '0.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-1px' }}>Servidor Alta Concurrencia</h3>
+          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6 }}>
+            <p style={{ marginBottom: '1rem' }}>
+              <strong>El Problema:</strong> Soportar miles de solicitudes concurrentes para el e-commerce sin cuellos de botella ni caídas de servicio.
+            </p>
+            <p style={{ marginBottom: '1rem' }}>
+              <strong>La Solución:</strong> Se construyó un microservicio en Go usando Goroutines para lograr máxima concurrencia con mínimo uso de memoria, implementando cifrado y autenticación JWT estricta para garantizar seguridad absoluta.
+            </p>
+            <p>
+              <strong>Tecnologías Clave:</strong> Go, Goroutines, JWT, Seguridad API.
+            </p>
+          </div>
         </div>
       </div>
 
