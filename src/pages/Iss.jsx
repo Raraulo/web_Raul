@@ -138,8 +138,8 @@ const Iss = () => {
         if (!response.ok) throw new Error('Error primary API');
         json = await response.json();
       } catch (err) {
-        // Fallback a open-notify si api.wheretheiss.at falla (ej. error 522)
-        const fbResponse = await fetch('http://api.open-notify.org/iss-now.json');
+        // Fallback a open-notify (vía proxy configurado en vercel.json y vite.config.js para evitar error de HTTPS Mixed Content)
+        const fbResponse = await fetch('/api/iss');
         if (!fbResponse.ok) throw new Error('No se pudo obtener la posición de la ISS (fallback)');
         const fbJson = await fbResponse.json();
         json = {

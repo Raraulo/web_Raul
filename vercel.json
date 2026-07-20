@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/iss",
+      "destination": "http://api.open-notify.org/iss-now.json"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
